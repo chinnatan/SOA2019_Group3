@@ -1,30 +1,22 @@
-package it.kmitl.soa.eleaving.subject;
+package it.kmitl.soa.eleaving.leaves;
 
-public class Subject {
+public class LeaveSubject {
 
-    private String studentId;
     private String subjectId;
     private String subjectName;
     private String section;
     private String professor;
+    private String status;
 
-    public Subject() {
+    public LeaveSubject() {
     }
 
-    public Subject(String studentId, String subjectId, String subjectName, String section, String professor) {
-        this.studentId = studentId;
+    public LeaveSubject(String subjectId, String subjectName, String section, String professor, String status) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
         this.section = section;
         this.professor = professor;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+        this.status = status;
     }
 
     public String getSubjectId() {
@@ -57,5 +49,13 @@ public class Subject {
 
     public void setProfessor(String professor) {
         this.professor = professor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

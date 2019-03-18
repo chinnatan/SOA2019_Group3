@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,10 +28,10 @@ public class LeaveControllerTest {
     public void getLeaveDocument() {
         // Initial Data
         List<String> nameDocument = new ArrayList<String>(Arrays.asList("ใบรับรองแพทย์"));
-        ArrayList<Subject> subjectList = new ArrayList<>(Arrays.asList(
-                new Subject("SL001", "60123", "SOA", "Somkiat", "รออนุมัติ"),
-                new Subject("SL001", "60124", "SVAV", "Somkiat Wa.", "รออนุมัติ"),
-                new Subject("SL001", "60125", "LIB", "Chutima", "อนุมัติ")
+        ArrayList<LeaveSubject> subjectList = new ArrayList<>(Arrays.asList(
+                new LeaveSubject("60123", "SOA", "1", "Somkiat", "รออนุมัติ"),
+                new LeaveSubject("60124", "SVAV", "1", "Somkiat Wa.", "รออนุมัติ"),
+                new LeaveSubject("60125", "LIB", "601", "Chutima", "อนุมัติ")
         ));
         List<LeaveDocument> listDocumentTest = new ArrayList<>(Arrays.asList(
                 new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",

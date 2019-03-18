@@ -24,11 +24,16 @@ public class LeaveDocument {
     private String startLeaveDate;
     private String endLeaveDate;
     private int totalLeave;
-    private ArrayList<Subject> subjectList;
+    private ArrayList<LeaveSubject> subjectList;
 
     public LeaveDocument() {}
 
-    public LeaveDocument(String leaveDocumentId, String leaveDocumentCategory, String leaveDocumentDate, String firstname, String lastname, String studentId, int term, int schoolYear, int studentYear, int studentGeneration, String studentBranch, String studentDegree, String desciption, List<String> nameDocument, String startLeaveDate, String endLeaveDate, int totalLeave, ArrayList<Subject> subjectList) {
+    public LeaveDocument(String leaveDocumentId, String leaveDocumentCategory,
+                         String leaveDocumentDate, String firstname, String lastname,
+                         String studentId, int term, int schoolYear, int studentYear,
+                         int studentGeneration, String studentBranch, String studentDegree,
+                         String desciption, List<String> nameDocument, String startLeaveDate,
+                         String endLeaveDate, int totalLeave, ArrayList<LeaveSubject> subjectList) {
         this.leaveDocumentId = leaveDocumentId;
         this.leaveDocumentCategory = leaveDocumentCategory;
         this.leaveDocumentDate = leaveDocumentDate;
@@ -185,11 +190,11 @@ public class LeaveDocument {
         this.totalLeave = totalLeave;
     }
 
-    public ArrayList<Subject> getSubjectList() {
+    public ArrayList<LeaveSubject> getSubjectList() {
         return subjectList;
     }
 
-    public void setSubjectList(ArrayList<Subject> subjectList) {
+    public void setSubjectList(ArrayList<LeaveSubject> subjectList) {
         this.subjectList = subjectList;
     }
 }
