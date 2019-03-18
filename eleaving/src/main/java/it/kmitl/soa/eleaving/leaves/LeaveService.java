@@ -12,17 +12,23 @@ public class LeaveService {
 
     private List<String> nameDocument = new ArrayList<String>(Arrays.asList("ใบรับรองแพทย์"));
     private ArrayList<Subject> subjectList = new ArrayList<>(Arrays.asList(
-            new Subject("60123", "SOA", "Somkiat")
+            new Subject("SL001", "60123", "SOA", "Somkiat", "รออนุมัติ"),
+            new Subject("SL001", "60124", "SVAV", "Somkiat Wa.", "รออนุมัติ"),
+            new Subject("SL001", "60125", "LIB", "Chutima", "อนุมัติ")
     ));
 
     public List<LeaveDocument> leaveDocumentList = new ArrayList<>(Arrays.asList(
-            new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562", "ชินธันย์", "ชาติทอง", "59070040", 2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)", "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument, "11/03/2562", "11/03/2562", 1, subjectList),
-            new LeaveDocument("SL002", "ลาย้อนหลัง", "11/03/2562", "ชินธันย์", "ชาติทอง", "59070040", 2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)", "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument, "11/03/2562", "11/03/2562", 1, subjectList)
+            new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
+                    "ชินธันย์", "ชาติทอง", "59070040",
+                    2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                    "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
+                    "11/03/2562", "11/03/2562", 1, subjectList),
+            new LeaveDocument("SL002", "ลาล่วงหน้า", "12/03/2562",
+                    "ชินธันย์", "ชาติทอง", "59070040",
+                    2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                    "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
+                    "12/03/2562", "12/03/2562", 1, subjectList)
     ));
-
-    public List<LeaveDocument> getAllLeaveDocumentList() {
-        return leaveDocumentList;
-    }
 
     public List<LeaveDocument> getAllLeaveDocument(String studentId) {
         List<LeaveDocument> specifyLeaveDocument = new ArrayList<>();

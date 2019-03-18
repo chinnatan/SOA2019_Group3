@@ -9,10 +9,11 @@ import java.util.List;
 
 @RestController
 public class LeaveController {
+
     @Autowired
     private LeaveService leaveService;
 
-    @RequestMapping(value = "/leave/{studentid}")
+    @RequestMapping(value = "/leave/status/{studentid}")
     public List<LeaveDocument> getLeaveDocument(@PathVariable String studentid) {
         return leaveService.getAllLeaveDocument(studentid);
     }
