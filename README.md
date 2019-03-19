@@ -11,7 +11,13 @@ git clone https://github.com/chinnatan/SOA2019_Group3.git
 cd eleaving
 ```
 
-Finally, Compile & Run
+Second step, Compile & Run
 ```
 mvnw clean package
+java -jar target\eleaving-0.0.1-SNAPSHOT.jar
+```
+
+Final, Test
+```
+mvnw clean test
 ```
