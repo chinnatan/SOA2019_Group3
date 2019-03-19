@@ -9,8 +9,8 @@ public class UserService {
             "Chatthong", 2, 2561, 3, 14,
             "Information Technology", "ปริญญาตรี");
 
-    public User getUser(int userid) {
-        if(user.getUserId() == userid) {
+    public User getUser() {
+        if(user != null) {
             return user;
         }
         return null;

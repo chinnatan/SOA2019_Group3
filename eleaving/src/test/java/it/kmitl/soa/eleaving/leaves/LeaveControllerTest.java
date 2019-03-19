@@ -25,7 +25,7 @@ public class LeaveControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void getLeaveDocument() {
+    public void getStatusLeaveDocument() {
         // Initial Data
         List<String> nameDocument = new ArrayList<String>(Arrays.asList("ใบรับรองแพทย์"));
         ArrayList<LeaveSubject> subjectList = new ArrayList<>(Arrays.asList(

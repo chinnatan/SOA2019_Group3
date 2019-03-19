@@ -29,7 +29,7 @@ public class UserControllerTest {
 
         // Get Data from API
         ResponseEntity<User> response = testRestTemplate.exchange(
-                "/users/1",
+                "/user",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<User>() {

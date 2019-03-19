@@ -1,6 +1,5 @@
 package it.kmitl.soa.eleaving.leaves;
 
-import it.kmitl.soa.eleaving.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class LeaveService {
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
 
-    public List<LeaveDocument> getAllLeaveDocument(String studentId) {
+    public List<LeaveDocument> getStatusLeaveDocument(String studentId) {
         List<LeaveDocument> specifyLeaveDocument = new ArrayList<>();
         for(int count=0;count<leaveDocumentList.size();count++) {
             if(leaveDocumentList.get(count).getStudentId().equals(studentId)) {
@@ -38,5 +37,13 @@ public class LeaveService {
             }
         }
         return specifyLeaveDocument;
+    }
+
+    public List<LeaveDocument> getAllLeaveDocument() {
+        return leaveDocumentList;
+    }
+
+    public LeaveDocument getLeaveDocument(String leaveDocumentId) {
+        return leaveDocumentList.stream().filter(leaveDocument -> leaveDocument.getLeaveDocumentId().equals(leaveDocumentId)).findFirst().get();
     }
 }
