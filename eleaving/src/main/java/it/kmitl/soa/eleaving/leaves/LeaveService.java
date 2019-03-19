@@ -29,21 +29,17 @@ public class LeaveService {
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
 
-    public List<LeaveDocument> getStatusLeaveDocument(String studentId) {
-        List<LeaveDocument> specifyLeaveDocument = new ArrayList<>();
-        for(int count=0;count<leaveDocumentList.size();count++) {
-            if(leaveDocumentList.get(count).getStudentId().equals(studentId)) {
-                specifyLeaveDocument.add(leaveDocumentList.get(count));
-            }
-        }
-        return specifyLeaveDocument;
-    }
-
     public List<LeaveDocument> getAllLeaveDocument() {
         return leaveDocumentList;
     }
 
     public LeaveDocument getLeaveDocument(String leaveDocumentId) {
         return leaveDocumentList.stream().filter(leaveDocument -> leaveDocument.getLeaveDocumentId().equals(leaveDocumentId)).findFirst().get();
+    }
+
+    public List<LeaveSubject> getStatus(String leaveDocumentId) {
+        LeaveDocument singleLeaveDocument = getLeaveDocument(leaveDocumentId);
+        List<LeaveSubject> subjectStatus = singleLeaveDocument.getSubjectList();
+        return subjectStatus;
     }
 }

@@ -1,6 +1,5 @@
 package it.kmitl.soa.eleaving.leaves;
 
-import it.kmitl.soa.eleaving.subject.Subject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,40 +23,81 @@ public class LeaveControllerTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @Test
-    public void getStatusLeaveDocument() {
-        // Initial Data
-        List<String> nameDocument = new ArrayList<String>(Arrays.asList("ใบรับรองแพทย์"));
-        ArrayList<LeaveSubject> subjectList = new ArrayList<>(Arrays.asList(
-                new LeaveSubject("60123", "SOA", "1", "Somkiat", "รออนุมัติ"),
-                new LeaveSubject("60124", "SVAV", "1", "Somkiat Wa.", "รออนุมัติ"),
-                new LeaveSubject("60125", "LIB", "601", "Chutima", "อนุมัติ")
-        ));
-        List<LeaveDocument> listDocumentTest = new ArrayList<>(Arrays.asList(
-                new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
-                        "ชินธันย์", "ชาติทอง", "59070040",
-                        2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
-                        "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
-                        "11/03/2562", "11/03/2562", 1, subjectList),
-                new LeaveDocument("SL002", "ลาล่วงหน้า", "12/03/2562",
-                        "ชินธันย์", "ชาติทอง", "59070040",
-                        2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
-                        "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
-                        "12/03/2562", "12/03/2562", 1, subjectList)
-        ));
+    // Initial Data for test
+    private List<String> nameDocument = new ArrayList<String>(Arrays.asList("ใบรับรองแพทย์"));
+    private ArrayList<LeaveSubject> subjectList = new ArrayList<>(Arrays.asList(
+            new LeaveSubject("60123", "SOA", "1", "Somkiat", "รออนุมัติ"),
+            new LeaveSubject("60124", "SVAV", "1", "Somkiat Wa.", "รออนุมัติ"),
+            new LeaveSubject("60125", "LIB", "601", "Chutima", "อนุมัติ")
+    ));
+    private List<LeaveDocument> listDocumentExpected = new ArrayList<>(Arrays.asList(
+            new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
+                    "ชินธันย์", "ชาติทอง", "59070040",
+                    2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                    "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
+                    "11/03/2562", "11/03/2562", 1, subjectList),
+            new LeaveDocument("SL002", "ลาล่วงหน้า", "12/03/2562",
+                    "ชินธันย์", "ชาติทอง", "59070040",
+                    2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                    "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
+                    "12/03/2562", "12/03/2562", 1, subjectList)
+    ));
 
+    @Test
+    public void getAllLeaveDocument() {
         // Get Data from API
         ResponseEntity<List<LeaveDocument>> response = testRestTemplate.exchange(
-                "/leave/status/59070040",
+                "/leave",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<LeaveDocument>>(){});
-        List<LeaveDocument> leaveDocumentResponse = response.getBody();
+        List<LeaveDocument> leaveDocumentActual = response.getBody();
 
-        // Assert Size
-        assertEquals(listDocumentTest.size(), leaveDocumentResponse.size());
+        // Assert size
+        assertEquals(listDocumentExpected.size(), leaveDocumentActual.size());
 
         // Assert LeaveDocumentID of index "0"
-        assertEquals(listDocumentTest.get(0).getLeaveDocumentId(), leaveDocumentResponse.get(0).getLeaveDocumentId());
+        assertEquals(listDocumentExpected.get(0).getLeaveDocumentId(), leaveDocumentActual.get(0).getLeaveDocumentId());
+    }
+
+    @Test
+    public void getLeaveDocument() {
+        // Data test "SL001"
+        LeaveDocument leaveDocumentExpected = listDocumentExpected.stream().filter(leaveDocument ->
+                leaveDocument.getLeaveDocumentId().equals("SL001")).findFirst().get();
+
+        // Get Data from API
+        ResponseEntity<LeaveDocument> response = testRestTemplate.exchange(
+                "/leave/SL001",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<LeaveDocument>(){});
+        LeaveDocument leaveDocumentActual = response.getBody();
+
+        // Assert LeaveDocumentID
+        assertEquals(leaveDocumentExpected.getLeaveDocumentId(), leaveDocumentActual.getLeaveDocumentId());
+    }
+
+    @Test
+    public void getLeaveDocumentStatus() {
+        // Data test "SL001"
+        LeaveDocument leaveDocuments = listDocumentExpected.stream().filter(leaveDocument ->
+                leaveDocument.getLeaveDocumentId().equals("SL001")).findFirst().get();
+        List<LeaveSubject> leaveSubjectListExpected = leaveDocuments.getSubjectList();
+
+        // Get Data from API
+        ResponseEntity<List<LeaveSubject>> response = testRestTemplate.exchange(
+                "/leave/SL001/status",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<LeaveSubject>>(){});
+        List<LeaveSubject> leaveSubjectListActual = response.getBody();
+
+        // Assert size
+        assertEquals(leaveSubjectListExpected.size(), leaveSubjectListActual.size());
+
+        // Assert SubjectID and Status of index "0"
+        assertEquals(leaveSubjectListExpected.get(0).getSubjectId(), leaveSubjectListActual.get(0).getSubjectId());
+        assertEquals(leaveSubjectListExpected.get(0).getStatus(), leaveSubjectListActual.get(0).getStatus());
     }
 }

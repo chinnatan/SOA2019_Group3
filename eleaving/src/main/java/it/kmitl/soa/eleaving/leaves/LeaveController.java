@@ -14,11 +14,6 @@ public class LeaveController {
     @Autowired
     private LeaveService leaveService;
 
-    @RequestMapping(value = "/leave/status/{studentid}")
-    public List<LeaveDocument> getStatusLeaveDocument(@PathVariable String studentid) {
-        return leaveService.getStatusLeaveDocument(studentid);
-    }
-
     @GetMapping(value = "/leave")
     public List<LeaveDocument> getAllLeaveDocument() {
         return leaveService.getAllLeaveDocument();
@@ -27,5 +22,10 @@ public class LeaveController {
     @GetMapping(value = "/leave/{leaveid}")
     public LeaveDocument getLeaveDocument(@PathVariable String leaveid) {
         return leaveService.getLeaveDocument(leaveid);
+    }
+
+    @GetMapping(value = "/leave/{leaveid}/status")
+    public List<LeaveSubject> getLeaveDocumentStatus(@PathVariable String leaveid) {
+        return leaveService.getStatus(leaveid);
     }
 }
