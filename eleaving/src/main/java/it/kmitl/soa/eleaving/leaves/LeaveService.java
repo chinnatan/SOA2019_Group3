@@ -42,4 +42,16 @@ public class LeaveService {
         List<LeaveSubject> subjectStatus = singleLeaveDocument.getSubjectList();
         return subjectStatus;
     }
+
+    public LeaveDocument createSickLeaveDocument() {
+        LeaveDocument sick = new LeaveDocument();
+        sick.setLeaveDocumentCategory("ลาป่วย");
+        return sick;
+    }
+
+    public LeaveDocument createPersonalLeaveDocument() {
+        LeaveDocument personal = new LeaveDocument();
+        personal.setLeaveDocumentCategory("ลากิจ");
+        return personal;
+    }
 }

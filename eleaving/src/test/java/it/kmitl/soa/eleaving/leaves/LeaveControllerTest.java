@@ -42,7 +42,20 @@ public class LeaveControllerTest {
                     "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
+    private LeaveDocument sickDocumentExpected = new LeaveDocument(null, "ลาป่วย", null,
+            null, null, null,
+            0, 0, 0, 0, null,
+            null, null, null,
+            null, null, 0, null);
 
+    private LeaveDocument personalDocumentExpected = new LeaveDocument(null, "ลากิจ", null,
+            null, null, null,
+            0, 0, 0, 0, null,
+            null, null, null,
+            null, null, 0, null);
+
+
+    // Start Testing
     @Test
     public void getAllLeaveDocument() {
         // Get Data from API
@@ -99,5 +112,33 @@ public class LeaveControllerTest {
         // Assert SubjectID and Status of index "0"
         assertEquals(leaveSubjectListExpected.get(0).getSubjectId(), leaveSubjectListActual.get(0).getSubjectId());
         assertEquals(leaveSubjectListExpected.get(0).getStatus(), leaveSubjectListActual.get(0).getStatus());
+    }
+
+    @Test
+    public void createSickLeaveDocument() {
+        // Get Data from API
+        ResponseEntity<LeaveDocument> response = testRestTemplate.exchange(
+                "/leave/sick/send",
+                HttpMethod.POST,
+                null,
+                new ParameterizedTypeReference<LeaveDocument>(){});
+        LeaveDocument sickDocumentActual = response.getBody();
+
+        // Assert Category
+        assertEquals(sickDocumentExpected.getLeaveDocumentCategory(), sickDocumentActual.getLeaveDocumentCategory());
+    }
+
+    @Test
+    public void createPersonalLeaveDocument() {
+        // Get Data from API
+        ResponseEntity<LeaveDocument> response = testRestTemplate.exchange(
+                "/leave/personal/send",
+                HttpMethod.POST,
+                null,
+                new ParameterizedTypeReference<LeaveDocument>(){});
+        LeaveDocument personalDocumentActual = response.getBody();
+
+        // Assert Category
+        assertEquals(personalDocumentExpected.getLeaveDocumentCategory(), personalDocumentActual.getLeaveDocumentCategory());
     }
 }

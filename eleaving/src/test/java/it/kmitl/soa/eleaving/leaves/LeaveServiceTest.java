@@ -23,27 +23,39 @@ public class LeaveServiceTest {
             new LeaveSubject("60125", "LIB", "601", "Chutima", "อนุมัติ")
     ));
     private List<LeaveDocument> listDocumentExpected = new ArrayList<>(Arrays.asList(
-            new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
+            new LeaveDocument("SL001", "ลาป่วย", "11/03/2562",
                     "ชินธันย์", "ชาติทอง", "59070040",
                     2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
                     "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
                     "11/03/2562", "11/03/2562", 1, subjectList),
-            new LeaveDocument("SL002", "ลาล่วงหน้า", "12/03/2562",
+            new LeaveDocument("SL002", "ลากิจ", "12/03/2562",
                     "ชินธันย์", "ชาติทอง", "59070040",
                     2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
                     "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
+    private LeaveDocument sickDocumentExpected = new LeaveDocument(null, "ลาป่วย", null,
+            null, null, null,
+            0, 0, 0, 0, null,
+            null, null, null,
+            null, null, 0, null);
 
+    private LeaveDocument personalDocumentExpected = new LeaveDocument(null, "ลากิจ", null,
+            null, null, null,
+            0, 0, 0, 0, null,
+            null, null, null,
+            null, null, 0, null);
+
+    // Start Testing
     @Test
     public void getAllLeaveDocument() {
         List<LeaveDocument> listDocumentActual = new ArrayList<>(Arrays.asList(
-                new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
+                new LeaveDocument("SL001", "ลาป่วย", "11/03/2562",
                         "ชินธันย์", "ชาติทอง", "59070040",
                         2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
                         "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
                         "11/03/2562", "11/03/2562", 1, subjectList),
-                new LeaveDocument("SL002", "ลาล่วงหน้า", "12/03/2562",
+                new LeaveDocument("SL002", "ลากิจ", "12/03/2562",
                         "ชินธันย์", "ชาติทอง", "59070040",
                         2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
                         "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
@@ -60,7 +72,7 @@ public class LeaveServiceTest {
     @Test
     public void getLeaveDocument() {
         LeaveDocument leaveDocumentExpected = listDocumentExpected.get(0);
-        LeaveDocument leaveDocumentActual = new LeaveDocument("SL001", "ลาย้อนหลัง", "11/03/2562",
+        LeaveDocument leaveDocumentActual = new LeaveDocument("SL001", "ลาป่วย", "11/03/2562",
                 "ชินธันย์", "ชาติทอง", "59070040",
                 2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
                 "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
@@ -90,5 +102,23 @@ public class LeaveServiceTest {
         // Assert subjectid and status of index "0"
         assertEquals(leaveStatusExpected.get(0).getSubjectId(), leaveStatusActual.get(0).getSubjectId());
         assertEquals(leaveStatusExpected.get(0).getStatus(), leaveStatusActual.get(0).getStatus());
+    }
+
+    @Test
+    public void createSickLeaveDocument() {
+        LeaveDocument sickDocumentActual = new LeaveDocument();
+        sickDocumentActual.setLeaveDocumentCategory("ลาป่วย");
+
+        // Assert Category
+        assertEquals(sickDocumentExpected.getLeaveDocumentCategory(), sickDocumentActual.getLeaveDocumentCategory());
+    }
+
+    @Test
+    public void createPersonalLeaveDocument() {
+        LeaveDocument personalDocumentActual = new LeaveDocument();
+        personalDocumentActual.setLeaveDocumentCategory("ลากิจ");
+
+        // Assert Category
+        assertEquals(personalDocumentExpected.getLeaveDocumentCategory(), personalDocumentActual.getLeaveDocumentCategory());
     }
 }

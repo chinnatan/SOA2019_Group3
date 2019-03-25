@@ -1,10 +1,7 @@
 package it.kmitl.soa.eleaving.leaves;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +24,15 @@ public class LeaveController {
     @GetMapping(value = "/leave/{leaveid}/status")
     public List<LeaveSubject> getLeaveDocumentStatus(@PathVariable String leaveid) {
         return leaveService.getStatus(leaveid);
+    }
+
+    @PostMapping(value = "/leave/sick/send")
+    public LeaveDocument createSickLeaveDocument() {
+        return leaveService.createSickLeaveDocument();
+    }
+
+    @PostMapping(value = "/leave/personal/send")
+    public LeaveDocument createPersonalLeaveDocument() {
+        return leaveService.createPersonalLeaveDocument();
     }
 }
