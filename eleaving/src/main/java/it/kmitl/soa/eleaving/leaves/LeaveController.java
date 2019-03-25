@@ -27,12 +27,12 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/leave/sick/send")
-    public LeaveDocument createSickLeaveDocument() {
-        return leaveService.createSickLeaveDocument();
+    public String sendSickLeaveDocument() {
+        return leaveService.sendSickLeaveDocument();
     }
 
     @PostMapping(value = "/leave/personal/send")
-    public LeaveDocument createPersonalLeaveDocument() {
-        return leaveService.createPersonalLeaveDocument();
+    public String sendPersonalLeaveDocument() {
+        return leaveService.sendPersonalLeaveDocument();
     }
 }

@@ -43,15 +43,21 @@ public class LeaveService {
         return subjectStatus;
     }
 
-    public LeaveDocument createSickLeaveDocument() {
-        LeaveDocument sick = new LeaveDocument();
-        sick.setLeaveDocumentCategory("ลาป่วย");
-        return sick;
+    public String sendSickLeaveDocument() {
+        LeaveDocument sick = new LeaveDocument("SL001", "ลาป่วย", "11/03/2562",
+                "ชินธันย์", "ชาติทอง", "59070040",
+                2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                "ปริญญาตรี", "ลำไส้อักเสบ", nameDocument,
+                "11/03/2562", "11/03/2562", 1, subjectList);
+        return "Send Success";
     }
 
-    public LeaveDocument createPersonalLeaveDocument() {
-        LeaveDocument personal = new LeaveDocument();
-        personal.setLeaveDocumentCategory("ลากิจ");
-        return personal;
+    public String sendPersonalLeaveDocument() {
+        LeaveDocument personal = new LeaveDocument("SL002", "ลากิจ", "12/03/2562",
+                "ชินธันย์", "ชาติทอง", "59070040",
+                2, 2561, 3, 14, "เทคโนโลยีสารสนเทศ(ภาคปกติ)",
+                "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
+                "12/03/2562", "12/03/2562", 1, subjectList);
+        return "Send Success";
     }
 }

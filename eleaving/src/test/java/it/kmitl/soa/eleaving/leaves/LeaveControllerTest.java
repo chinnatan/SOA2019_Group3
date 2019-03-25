@@ -42,18 +42,6 @@ public class LeaveControllerTest {
                     "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
-    private LeaveDocument sickDocumentExpected = new LeaveDocument(null, "ลาป่วย", null,
-            null, null, null,
-            0, 0, 0, 0, null,
-            null, null, null,
-            null, null, 0, null);
-
-    private LeaveDocument personalDocumentExpected = new LeaveDocument(null, "ลากิจ", null,
-            null, null, null,
-            0, 0, 0, 0, null,
-            null, null, null,
-            null, null, 0, null);
-
 
     // Start Testing
     @Test
@@ -115,30 +103,30 @@ public class LeaveControllerTest {
     }
 
     @Test
-    public void createSickLeaveDocument() {
+    public void sendSickLeaveDocument() {
         // Get Data from API
-        ResponseEntity<LeaveDocument> response = testRestTemplate.exchange(
+        ResponseEntity<String> response = testRestTemplate.exchange(
                 "/leave/sick/send",
                 HttpMethod.POST,
                 null,
-                new ParameterizedTypeReference<LeaveDocument>(){});
-        LeaveDocument sickDocumentActual = response.getBody();
+                new ParameterizedTypeReference<String>(){});
+        String sickActual = response.getBody();
 
-        // Assert Category
-        assertEquals(sickDocumentExpected.getLeaveDocumentCategory(), sickDocumentActual.getLeaveDocumentCategory());
+        // Assert Send Success
+        assertEquals("Send Success", sickActual);
     }
 
     @Test
-    public void createPersonalLeaveDocument() {
+    public void sendPersonalLeaveDocument() {
         // Get Data from API
-        ResponseEntity<LeaveDocument> response = testRestTemplate.exchange(
+        ResponseEntity<String> response = testRestTemplate.exchange(
                 "/leave/personal/send",
                 HttpMethod.POST,
                 null,
-                new ParameterizedTypeReference<LeaveDocument>(){});
-        LeaveDocument personalDocumentActual = response.getBody();
+                new ParameterizedTypeReference<String>(){});
+        String personalActual = response.getBody();
 
-        // Assert Category
-        assertEquals(personalDocumentExpected.getLeaveDocumentCategory(), personalDocumentActual.getLeaveDocumentCategory());
+        // Assert Send Success
+        assertEquals("Send Success", personalActual);
     }
 }

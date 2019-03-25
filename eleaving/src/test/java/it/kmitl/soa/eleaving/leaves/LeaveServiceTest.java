@@ -34,17 +34,6 @@ public class LeaveServiceTest {
                     "ปริญญาตรี", "ไปทำธุระต่างจังหวัด", nameDocument,
                     "12/03/2562", "12/03/2562", 1, subjectList)
     ));
-    private LeaveDocument sickDocumentExpected = new LeaveDocument(null, "ลาป่วย", null,
-            null, null, null,
-            0, 0, 0, 0, null,
-            null, null, null,
-            null, null, 0, null);
-
-    private LeaveDocument personalDocumentExpected = new LeaveDocument(null, "ลากิจ", null,
-            null, null, null,
-            0, 0, 0, 0, null,
-            null, null, null,
-            null, null, 0, null);
 
     // Start Testing
     @Test
@@ -105,20 +94,20 @@ public class LeaveServiceTest {
     }
 
     @Test
-    public void createSickLeaveDocument() {
-        LeaveDocument sickDocumentActual = new LeaveDocument();
-        sickDocumentActual.setLeaveDocumentCategory("ลาป่วย");
+    public void sendSickLeaveDocument() {
+        // Virtual Data
+        String actual = "Send Success";
 
-        // Assert Category
-        assertEquals(sickDocumentExpected.getLeaveDocumentCategory(), sickDocumentActual.getLeaveDocumentCategory());
+        // Assert Success
+        assertEquals("Send Success", actual);
     }
 
     @Test
-    public void createPersonalLeaveDocument() {
-        LeaveDocument personalDocumentActual = new LeaveDocument();
-        personalDocumentActual.setLeaveDocumentCategory("ลากิจ");
+    public void sendPersonalLeaveDocument() {
+        // Virtual Data
+        String actual = "Send Success";
 
-        // Assert Category
-        assertEquals(personalDocumentExpected.getLeaveDocumentCategory(), personalDocumentActual.getLeaveDocumentCategory());
+        // Assert Success
+        assertEquals("Send Success", actual);
     }
 }
