@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    // Init Virtual Data
     private User user = new User(1, "59070040", "it59070040", "Chinnatan",
             "Chatthong", 2, 2561, 3, 14,
             "Information Technology", "ปริญญาตรี");
