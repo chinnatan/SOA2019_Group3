@@ -29,6 +29,8 @@ mvnw clean test
 |`GET /leave`|
 |`GET /leave/:leaveid:`|
 |`GET /leave/:leaveid:/status`|
+|`POST /leave/sick/send`|
+|`POST /leave/personal/send`|
 > หมายเหตุ : ข้อมูลสมมุติ (leaveid) -> "SL001", "SL002"
 ### Subject Service
 | Endpoint URL |
