@@ -21,3 +21,22 @@ Final, Test
 ```
 mvnw clean test
 ```
+
+## API & Endpoints
+### Leave Service
+| Endpoint URL |
+|---|
+|`GET /leave`|
+|`GET /leave/:leaveid:`|
+|`GET /leave/:leaveid:/status`|
+> หมายเหตุ : ข้อมูลสมมุติ (leaveid) -> "SL001", "SL002"
+### Subject Service
+| Endpoint URL |
+|---|
+|`GET /subjects/:studentid:`|
+> หมายเหตุ : ข้อมูลสมมุติ (studentid) -> "59070040", "59070042"
+### User Service
+| Endpoint URL |
+|---|
+|`GET /user`|
+> หมายเหตุ : ข้อมูลสมมุติ (ดึงไว้แล้ว) -> "59070040"
