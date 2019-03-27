@@ -1,0 +1,37 @@
+[
+    {
+        "userid": 1,
+        "subjectid": "60123",
+        "subjectname": "SOA",
+        "subjectsection": 1,
+        "professor": "Somkiat"
+    },
+    {
+        "userid": 1,
+        "subjectid": "60124",
+        "subjectname": "SVAV",
+        "subjectsection": 1,
+        "professor": "Somkiat Wa."
+    },
+    {
+        "userid": 1,
+        "subjectid": "60125",
+        "subjectname": "LIB",
+        "subjectsection": 601,
+        "professor": "Chutima"
+    },
+    {
+        "userid": 2,
+        "subjectid": "60125",
+        "subjectname": "LIB",
+        "subjectsection": 601,
+        "professor": "Chutima"
+    },
+    {
+        "userid": 2,
+        "subjectid": "60124",
+        "subjectname": "SVAV",
+        "subjectsection": 1,
+        "professor": "Somkiat Wa."
+    }
+]
