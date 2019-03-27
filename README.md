@@ -8,18 +8,41 @@
 First step, Clone project from github
 ```
 git clone https://github.com/chinnatan/SOA2019_Group3.git
-cd eleaving
+cd eleaving/backend
 ```
 
 Second step, Compile & Run
+> Leave Service
 ```
-mvnw clean package
-java -jar target\eleaving-0.0.1-SNAPSHOT.jar
+cd LeaveService
+node app.js
+```
+> Subject Service
+```
+cd SubjectService
+node app.js
+```
+> User Service
+```
+cd UserService
+node app.js
 ```
 
 Final, Test
+> Leave Service
 ```
-mvnw clean test
+cd LeaveService
+npm test
+```
+> Subject Service
+```
+cd SubjectService
+npm test
+```
+> User Service
+```
+cd UserService
+npm test
 ```
 
 ## API & Endpoints
