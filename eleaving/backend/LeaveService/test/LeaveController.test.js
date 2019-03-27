@@ -111,9 +111,9 @@ describe('/leave', () => {
     })
 
     describe('GET / with incorrect', () => {
-        it('should return all leavedocument', async () => {
+        it('should return not found', async () => {
             const res = await request(server).get('/leave')
-            expect(res.body).toEqual([])
+            expect(res.status).toBe(404)
         })
     })
 
@@ -282,6 +282,20 @@ describe('/leave', () => {
                     "status": "อนุมัติ"
                 }
             ])
+        })
+    })
+
+    describe('POST /sick/send with correct', () => {
+        it('should return true', async () => {
+            const res = await request(server).post('/leave/sick/send')
+            expect(res.status).toBe(201)
+        })
+    })
+
+    describe('POST /personal/send with correct', () => {
+        it('should return true', async () => {
+            const res = await request(server).post('/leave/personal/send')
+            expect(res.status).toBe(201)
         })
     })
 })

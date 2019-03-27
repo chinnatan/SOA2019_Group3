@@ -28,3 +28,19 @@ exports.getStatus = (req, res) => {
         return res.status(200).json(filterLeavedocument[0].subjectlist);
     }
 }
+
+exports.postNewSickLeavedocument = (req, res) => {
+    var docs = req.body
+    
+    mockLeavedocument.push(docs)
+    
+    return res.status(201).send({isCreateNewSickLeavedocument:true})
+}
+
+exports.postNewPersonalLeavedocument = (req, res) => {
+    var docs = req.body
+    
+    mockLeavedocument.push(docs)
+    
+    return res.status(201).send({isCreateNewPersonalLeavedocument:true})
+}

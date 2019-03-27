@@ -13,4 +13,8 @@ router.get("/", leaveService.getAllLeavedocument);
 router.get("/:leaveid", leaveService.getLeavedocumentById);
 // Get Status from leavedocument By ID
 router.get("/:leaveid/status", leaveService.getStatus);
+// Post New Sick Leavedocument
+router.post("/sick/send", leaveService.postNewSickLeavedocument);
+// Post New Personal Leavedocument
+router.post("/personal/send", leaveService.postNewPersonalLeavedocument);
 module.exports = router;
