@@ -54,14 +54,119 @@ npm test
 |`GET /leave/:leaveid:/status`|
 |`POST /leave/sick/send`|
 |`POST /leave/personal/send`|
-> หมายเหตุ : ข้อมูลสมมุติ (leaveid) -> "SL001", "SL002"
+#### หมายเหตุ 
+- `GET /leave/:leaveid` ข้อมูลสมมุติ (leaveid) -> "sl001", "pn001"
+- `POST /leave/sick/send`
+   - JSON (Use `Postman`)
+   ```
+   {
+      "leavedocumentid": "sl002",
+      "leavedocumentcategory": "ลาป่วย",
+      "leavedocumentdate": "26/03/2562",
+      "firstname": "ชินธันย์",
+      "lastname": "ชาติทอง",
+      "studentid": "59070040",
+      "term": 2,
+      "schoolyear": 2561,
+      "studentyear": 3,
+      "studentgeneration": 14,
+      "studentbranch": "Information Technology",
+      "studentdegree": "ปริญญาตรี",
+      "description": "ลำไส้อักเสบ",
+      "namedocument": [
+          {
+              "namedocumentid": 1,
+              "filename": "ใบรับรองแพทย์"
+          }
+      ],
+      "startleavedate": "25/03/2562",
+      "endleavedate": "25/03/2562",
+      "totaldate": 1,
+      "subjectlist": [
+          {
+              "id": "60123",
+              "name": "SOA",
+              "section": 1,
+              "professor": "Somkiat",
+              "status": "รออนุมัติ"
+          },
+          {
+              "id": "60124",
+              "name": "SVAV",
+              "section": 1,
+              "professor": "Somkiat Wa.",
+              "status": "รออนุมัติ"
+          },
+          {
+              "id": "60125",
+              "name": "LIB",
+              "section": 601,
+              "professor": "Chutima",
+              "status": "อนุมัติ"
+          }
+      ]
+    }
+   ```
+- `POST /leave/personal/send`
+   - JSON (Use `Postman`)
+   ```
+   {
+      "leavedocumentid": "pn002",
+      "leavedocumentcategory": "ลากิจ",
+      "leavedocumentdate": "26/03/2562",
+      "firstname": "ชินธันย์",
+      "lastname": "ชาติทอง",
+      "studentid": "59070040",
+      "term": 2,
+      "schoolyear": 2561,
+      "studentyear": 3,
+      "studentgeneration": 14,
+      "studentbranch": "Information Technology",
+      "studentdegree": "ปริญญาตรี",
+      "description": "ไปทำธุระต่างจังหวัด",
+      "namedocument": [
+          {
+              
+          }
+      ],
+      "startleavedate": "25/03/2562",
+      "endleavedate": "25/03/2562",
+      "totaldate": 1,
+      "subjectlist": [
+          {
+              "id": "60123",
+              "name": "SOA",
+              "section": 1,
+              "professor": "Somkiat",
+              "status": "รออนุมัติ"
+          },
+          {
+              "id": "60124",
+              "name": "SVAV",
+              "section": 1,
+              "professor": "Somkiat Wa.",
+              "status": "รออนุมัติ"
+          },
+          {
+              "id": "60125",
+              "name": "LIB",
+              "section": 601,
+              "professor": "Chutima",
+              "status": "อนุมัติ"
+          }
+      ]
+    }
+   ```
+ 
 ### Subject Service
 | Endpoint URL |
 |---|
-|`GET /subjects/:studentid:`|
-> หมายเหตุ : ข้อมูลสมมุติ (studentid) -> "59070040", "59070042"
+|`GET /subjects/user/:userid`|
+#### หมายเหตุ 
+- `GET /subjects/user/:userid` ข้อมูลสมมุติ (userid) -> "1", "2"
 ### User Service
 | Endpoint URL |
 |---|
-|`GET /user`|
-> หมายเหตุ : ข้อมูลสมมุติ (ดึงไว้แล้ว) -> "59070040"
+|`GET /user/:userid`|
+#### หมายเหตุ 
+- `GET /user/:userid` ข้อมูลสมมุติ (userid) -> "1"
