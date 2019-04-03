@@ -19,21 +19,39 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12">
+                          <div class="alert alert-danger" v-if="login.messageAlert">
+                            <strong>ผิดพลาด!</strong> {{ login.messageAlert }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
                           <form>
                             <div class="form-group">
                               <input
                                 type="text"
                                 class="form-control-input"
                                 placeholder="ชื่อผู้ใช้ เช่น it590700xx"
+                                v-model="login.inputUsername"
                               >
                             </div>
                             <div class="form-group">
-                              <input type="password" class="form-control-input" placeholder="รหัสผ่าน">
+                              <input
+                                type="password"
+                                class="form-control-input"
+                                placeholder="รหัสผ่าน"
+                                v-model="login.inputPassword"
+                              >
                             </div>
                             <button
                               type="submit"
                               class="btn btn-success anakotmai-medium-text"
                             >เข้าสู่ระบบ</button>
+                            <button
+                              type="button"
+                              class="btn btn-danger anakotmai-medium-text"
+                              @click="isClear()"
+                            >คืนค่า</button>
                           </form>
                         </div>
                       </div>
@@ -41,7 +59,11 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <img src="../assets/images/logo-eleaving-with-text.png" class="img-fluid footer-logo" width="30%">
+                      <img
+                        src="../assets/images/logo-eleaving-with-text.png"
+                        class="img-fluid footer-logo"
+                        width="30%"
+                      >
                     </div>
                   </div>
                 </div>
@@ -66,8 +88,19 @@ export default {
   },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      login: {
+        inputUsername: "",
+        inputPassword: "",
+        messageAlert: ""
+      }
     };
+  },
+  methods: {
+    isClear() {
+      console.log('Clear Input')
+      this.login.inputUsername = ''
+      this.login.inputPassword = ''
+    }
   }
 };
 </script>
@@ -77,13 +110,13 @@ div.signin-image {
   width: 100%;
   height: 100%;
   background-image: url(../assets/images/itkmitl-building.jpg);
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-background-size: contain, cover;
-  -moz-background-size: contain, cover;
-  background-size: contain, cover;
-  -o-background-size: contain, cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
 }
 
 .signin-form {
@@ -91,7 +124,7 @@ div.signin-image {
 }
 
 .footer-logo {
-    padding: 5% 5% 5% 5%;
+  padding: 5% 5% 5% 5%;
 }
 
 .signin-panel {
@@ -223,7 +256,7 @@ div.signin-image {
 }
 
 .form-control-input {
-    font-family: 'Anakotmai-Medium';
+  font-family: "Anakotmai-Medium";
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -281,7 +314,8 @@ div.signin-image {
   opacity: 1;
 }
 
-.form-control-input:disabled, .form-control-input[readonly] {
+.form-control-input:disabled,
+.form-control-input[readonly] {
   background-color: #e9ecef;
   opacity: 1;
 }
