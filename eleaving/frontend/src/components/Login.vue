@@ -78,7 +78,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "Login",
   beforeCreate() {
     document.body.className = "login-page";
   },
