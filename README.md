@@ -161,9 +161,9 @@ npm test
 ### Subject Service
 | Endpoint URL |
 |---|
-|`GET /subjects/user/:userid`|
+|`GET /subject/user/:userid`|
 #### หมายเหตุ 
-- `GET /subjects/user/:userid` ข้อมูลสมมุติ (userid) -> "1", "2"
+- `GET /subject/user/:userid` ข้อมูลสมมุติ (userid) -> "1", "2"
 ### User Service
 | Endpoint URL |
 |---|
