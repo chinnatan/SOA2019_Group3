@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const userService = require("../service/UserService")
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser')
 
 // parse application/json
 router.use(bodyParser.urlencoded({ extended : true }));

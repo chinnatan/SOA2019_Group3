@@ -8,6 +8,6 @@ router.use(bodyParser.urlencoded({ extended : true }));
 router.use(bodyParser.json());
 
 // Get User Information
-router.get("/student/:userid", subjectService.getSubjectByUserId);
+router.get("/user/:userid", subjectService.getSubjectByUserId);
 
 module.exports = router;

@@ -10,7 +10,7 @@ describe('/user', () => {
 
     afterAll(() => {
         server.close();
-        console.log('test complete & server.close')
+        console.log('test complete & server close')
     })
 
     describe('GET /:id with correct', () => {
