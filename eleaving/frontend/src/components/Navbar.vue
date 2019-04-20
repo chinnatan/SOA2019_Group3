@@ -29,21 +29,18 @@
               <router-link
                 :to="'selection'"
                 class="nav-link"
-                v-smooth-scroll
               >{{navbar.catalogy}}</router-link>
             </li>
             <li class="nav-item">
               <router-link
                 :to="'status'"
                 class="nav-link"
-                v-smooth-scroll
               >{{navbar.status}}</router-link>
             </li>
             <li class="nav-item">
               <router-link
                 :to="'history'"
                 class="nav-link"
-                v-smooth-scroll
               >{{navbar.history}}</router-link>
             </li>
           </ul>

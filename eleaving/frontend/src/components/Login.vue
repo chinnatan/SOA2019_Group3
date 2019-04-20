@@ -20,13 +20,14 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="alert alert-danger" v-if="login.messageAlert">
-                            <strong>ผิดพลาด!</strong> {{ login.messageAlert }}
+                            <strong>ผิดพลาด!</strong>
+                            {{ login.messageAlert }}
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-12">
-                          <form>
+                          <form @submit="onLogin">
                             <div class="form-group">
                               <input
                                 type="text"
@@ -77,6 +78,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "../router";
+
 export default {
   name: "Login",
   beforeCreate() {
@@ -97,9 +101,36 @@ export default {
   },
   methods: {
     isClear() {
-      console.log('Clear Input')
-      this.login.inputUsername = ''
-      this.login.inputPassword = ''
+      console.log("Clear Input");
+      this.login.inputUsername = "";
+      this.login.inputPassword = "";
+    },
+    logins(payload) {
+      const path = "http://localhost:3001/api/auth/login";
+      axios
+        .post(path, payload)
+        .then(res => {
+          this.login.messageAlert = res.data.isLogin;
+          if (this.login.messageAlert != true) {
+            this.login.messageAlert = res.data.isLogin;
+          } else {
+            this.login.messageAlert = "";
+            localStorage.setItem("account_id", res.data.account_id);
+            localStorage.setItem("isLogin", res.data.isLogin);
+            router.push({ name: "Selection" });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    onLogin(evt) {
+      evt.preventDefault();
+      const payload = {
+        username: this.login.inputUsername,
+        password: this.login.inputPassword
+      };
+      this.logins(payload);
     }
   }
 };
