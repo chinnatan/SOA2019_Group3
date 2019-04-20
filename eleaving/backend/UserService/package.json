@@ -2,10 +2,10 @@
   "name": "userservice",
   "version": "1.0.0",
   "description": "user service with expressjs",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "author": "zKCNT",
   "license": "ISC",

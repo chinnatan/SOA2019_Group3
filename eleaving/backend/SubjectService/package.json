@@ -2,9 +2,10 @@
   "name": "subjectservice",
   "version": "1.0.0",
   "description": "subject service with expressjs",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "start": "node server.js"
   },
   "author": "zKCNT",
   "license": "ISC",

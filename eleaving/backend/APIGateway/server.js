@@ -2,59 +2,103 @@ const express = require('express')
 const httpProxy = require('express-http-proxy')
 const request = require('request-promise-native')
 const xml = require('xml')
+const Eureka = require('eureka-js-client').Eureka;
 
+// Constants
+const PORT = process.env.PORT || 3001
+const HOST = '0.0.0.0';
 const app = express()
-const port = process.env.PORT || 3001
 
-// Dummmy service discovery
-const userServiceUrl = 'http://localhost:3002'
-const subjectServiceUrl = 'http://localhost:3003'
-const leaveServiceUrl = 'http://localhost:3004'
+// Configuration
+const client = new Eureka({
+    // application instance information
+    instance: {
+        app: 'api-gateway',
+        hostName: 'localhost',
+        ipAddr: '127.0.0.1',
+        statusPageUrl: 'http://localhost:' + PORT,
+        vipAddress: 'api-gateway',
+        port: {
+            $: PORT,
+            '@enabled': 'true',
+        },
+        dataCenterInfo: {
+            '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+            name: 'MyOwn',
+        },
+        registerWithEureka: true,
+        fetchRegistry: true,
+    },
+    eureka: {
+        // Eureka server
+        host: 'localhost',
+        port: 8761,
+        servicePath: '/eureka/apps/',
+    },
+});
 
-const userServiceProxy = httpProxy(userServiceUrl)
-const subjectServiceProxy = httpProxy(subjectServiceUrl)
-const leaveServiceProxy = httpProxy(leaveServiceUrl)
+client.logger.level('debug');
+client.start(error => {
+    console.log(error || 'NodeJS Eureka client Started!');
+
+    // Service discovery from Eureka server
+    const authServiceInstance = client.getInstancesByAppId('auth-service');
+    const authServiceUrl = `http://${authServiceInstance[0].hostName}:${authServiceInstance[0].port.$}`;
+    const authServiceProxy = httpProxy(authServiceUrl)
+    console.log(`Auth-Service: ${authServiceUrl}`);
+
+    const userServiceInstance = client.getInstancesByAppId('user-service');
+    const userServiceUrl = `http://${userServiceInstance[0].hostName}:${userServiceInstance[0].port.$}`;
+    const userServiceProxy = httpProxy(userServiceUrl)
+    console.log(`User-Service: ${userServiceUrl}`);
+
+    const subjectServiceInstance = client.getInstancesByAppId('subject-service');
+    const subjectServiceUrl = `http://${subjectServiceInstance[0].hostName}:${subjectServiceInstance[0].port.$}`;
+    const subjectServiceProxy = httpProxy(subjectServiceUrl)
+    console.log(`Subject-Service: ${subjectServiceUrl}`);
+
+    const leaveServiceInstance = client.getInstancesByAppId('leave-service');
+    const leaveServiceUrl = `http://${leaveServiceInstance[0].hostName}:${leaveServiceInstance[0].port.$}`;
+    const leaveServiceProxy = httpProxy(leaveServiceUrl)
+    console.log(`Leave-Service: ${leaveServiceUrl}`);
+
+    // Set CORS
+    app.use((req, res, next) => {
+        const allowedOrigins = [
+            'http://localhost:8080/'
+        ];
+        if (!allowedOrigins.includes(req.headers.origin)) {
+            res.header("Access-Control-Allow-Origin", req.headers.origin);
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        }
+        return next();
+    })
+
+    // Proxy request after authentication
+    app.use('/api/auth', (req, res, next) => {
+        authServiceProxy(req, res, next)
+    })
+
+    app.use('/api/user', (req, res, next) => {
+        userServiceProxy(req, res, next)
+    })
+
+    app.use('/api/subject', (req, res, next) => {
+        subjectServiceProxy(req, res, next)
+    })
+
+    app.use('/api/leave', (req, res, next) => {
+        leaveServiceProxy(req, res, next)
+    })
+
+});
 
 // Shared general logic: Authentication
-app.use((req, res, next) => {
-    // TODO: my authentication logic
-    console.log(`Authentication: ${req.path}`)
-    next()
-})
+// app.use((req, res, next) => {
+//     // TODO: my authentication logic
+//     console.log(`Authentication: ${req.path}`)
+//     next()
+// })
 
-// Aggregate services after authentication
-app.get('/', async (req, res) => {
-    const services = await Promise.all([
-        request({ uri: userServiceUrl, json: true }),
-        request({ uri: subjectServiceUrl, json: true }),
-        request({ uri: leaveServiceUrl, json:true})
-    ])
-
-    const response = { services }
-
-    // Format transformation: XML or JSON
-    if (req.get('Content-Type') === 'application/xml') {
-        const xmlResponse = xml(response)
-        res.set('content-type', 'text/xml')
-        res.end(xmlResponse)
-    } else {
-        res.json(response)
-    }
-})
-
-// Proxy request after authentication
-app.use('/user/', (req, res, next) => {
-    userServiceProxy(req, res, next)
-})
-
-app.use('/subject', (req, res, next) => {
-    subjectServiceProxy(req, res, next)
-})
-
-app.use('/leave', (req, res, next) => {
-    leaveServiceProxy(req, res, next)
-})
-
-app.listen(port, () => {
-    console.info(`API Gateway is listening on port ${port}!`)
-})
+app.listen(PORT, HOST);
+console.log(`API Gateway Running on http://${HOST}:${PORT}`);

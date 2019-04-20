@@ -2,9 +2,10 @@
   "name": "leaveservice",
   "version": "1.0.0",
   "description": "leave service with expressjs",
-  "main": "app.js",
+  "main": "server.js",
   "directories": {
-    "test": "test"
+    "test": "jest --coverage",
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
