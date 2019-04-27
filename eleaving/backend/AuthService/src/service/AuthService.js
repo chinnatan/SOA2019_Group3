@@ -1,5 +1,4 @@
 const MySQL = require('mysql')
-const session = require('express-session')
 
 var sha1 = require('sha1')
 
@@ -23,7 +22,7 @@ exports.login = (req, res) => {
             console.log(results);
             if (results.length) {
                 console.log("Login success");
-                res.status(200).send({"account_id": results[0].account_id, "isLogin": true})
+                res.status(200).send({"account_id": results[0].account_id, "username": results[0].username, "account_type": results[0].account_type, "isLogin": true})
             } else {
                 res.status(200).send({"isLogin": 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'});
             }
