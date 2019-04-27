@@ -85,10 +85,15 @@ export default {
   name: "Login",
   beforeCreate() {
     document.body.className = "login-page";
+    if (localStorage.getItem("unAuth") == "false") {
+      localStorage.removeItem("messageAlert");
+      localStorage.removeItem("unAuth");
+    }
   },
   created() {
     document.title =
       ".:: เข้าสู่ระบบ - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
+    this.checkMessageAlert();
   },
   data() {
     return {
@@ -100,6 +105,12 @@ export default {
     };
   },
   methods: {
+    checkMessageAlert() {
+      if (localStorage.getItem("unAuth") == "true") {
+        this.login.messageAlert = localStorage.getItem("messageAlert");
+        localStorage.setItem("unAuth", false);
+      }
+    },
     isClear() {
       console.log("Clear Input");
       this.login.inputUsername = "";
@@ -115,10 +126,21 @@ export default {
             this.login.messageAlert = res.data.isLogin;
           } else {
             this.login.messageAlert = "";
-            localStorage.setItem("account_id", res.data.account_id);
-            localStorage.setItem("isLogin", res.data.isLogin);
+            localStorage.setItem("account", JSON.stringify(res.data));
+            this.getUserInformation(res.data.account_id);
             router.push({ name: "Selection" });
           }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getUserInformation(account_id) {
+      const path = "http://localhost:3001/api/user/" + account_id;
+      axios
+        .get(path)
+        .then(res => {
+          localStorage.setItem("profile", JSON.stringify(res.data[0]));
         })
         .catch(error => {
           console.log(error);

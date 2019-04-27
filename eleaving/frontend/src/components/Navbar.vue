@@ -26,38 +26,32 @@
         <div class="collapse navbar-collapse" id="navbarEleavingToggle">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <router-link
-                :to="'selection'"
-                class="nav-link"
-              >{{navbar.catalogy}}</router-link>
+              <router-link :to="'selection'" class="nav-link">{{navbar.catalogy}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link
-                :to="'status'"
-                class="nav-link"
-              >{{navbar.status}}</router-link>
+              <router-link :to="'status'" class="nav-link">{{navbar.status}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link
-                :to="'history'"
-                class="nav-link"
-              >{{navbar.history}}</router-link>
+              <router-link :to="'history'" class="nav-link">{{navbar.history}}</router-link>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
-              
               <a
-                class="profile-link"
+                class="profile-link anakotmai-medium-text"
                 href="#"
                 id="navbarDropdown"
                 role="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-              ><i class="fa fa-user"></i></a>
+              >
+                <i class="fa fa-user"></i>
+                {{ navbar.username }}
+                <i class="fa fa-caret-down"></i>
+              </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link :to="''" class="dropdown-item">ข้อมูลส่วนตัว</router-link>
+                <router-link :to="'profile'" class="dropdown-item">ข้อมูลส่วนตัว</router-link>
                 <div class="dropdown-divider"></div>
                 <router-link :to="'#'" v-on:click.native="Logout" class="dropdown-item">ออกจากระบบ</router-link>
               </div>
@@ -72,6 +66,8 @@
 <script>
 import router from "../router";
 
+var accountObj;
+
 export default {
   name: "Navbar",
   data() {
@@ -80,22 +76,37 @@ export default {
         brand: "e - leaving",
         catalogy: "ประเภทการลา",
         status: "สถานะการลา",
-        history: "ประวัติการลา"
-      },
-      active_el: "selection"
+        history: "ประวัติการลา",
+        username: ""
+      }
     };
+  },
+  beforeCreate() {
+    accountObj = JSON.parse(localStorage.getItem("account"));
   },
   methods: {
     getUser() {
-      this.account = localStorage.getItem("username");
+      this.navbar.username = accountObj.username;
+    },
+    isAuth() {
+      if (accountObj == null) {
+        localStorage.setItem("messageAlert", "กรุณาเข้าสู่ระบบก่อนใช้งาน");
+        localStorage.setItem("unAuth", true);
+        router.push({ name: "Login" });
+      } else {
+        this.getUser();
+      }
     },
     Logout() {
-      localStorage.removeItem("username");
+      localStorage.removeItem("account");
+      localStorage.removeItem("profile");
+      localStorage.removeItem("messageAlert");
+      localStorage.removeItem("unAuth");
       router.push({ name: "Login" });
     }
   },
   created() {
-    this.getUser();
+    this.isAuth();
   }
 };
 </script>
@@ -157,5 +168,6 @@ export default {
 
 .profile-link:hover {
   color: #f47932;
+  text-decoration: none;
 }
 </style>

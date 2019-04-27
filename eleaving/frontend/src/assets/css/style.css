@@ -28,6 +28,10 @@ body.login-page {
     color: #f47932;
 }
 
+.anakotmai-medium-text.white {
+    color: #ffffff;
+}
+
 .anakotmai-light-text {
     font-family: 'Anakotmai-Light';
 }
@@ -62,6 +66,18 @@ body.login-page {
 
 .h-75 {
     height: 75vh;
+}
+
+.h-80 {
+    height: 80vh;
+}
+
+.h-85 {
+    height: 85vh;
+}
+
+.h-90 {
+    height: 90vh;
 }
 
 .h-95 {

@@ -18,8 +18,10 @@
             <div class="card-footer">
               <a href="#" class="card-link footer">
                 <button
+                  id="sick"
                   type="button"
                   class="btn btn-success anakotmai-medium-text"
+                  @click="isSick()"
                 >{{ catalogy.select }}</button>
               </a>
             </div>
@@ -41,8 +43,10 @@
             <div class="card-footer">
               <a href="#" class="selection-card-link footer">
                 <button
+                  id="personal"
                   type="button"
                   class="btn btn-success anakotmai-medium-text"
+                  @click="isPersonal()"
                 >{{ catalogy.select }}</button>
               </a>
             </div>
@@ -58,6 +62,7 @@
 </template>
 
 <script>
+import router from "../router";
 import Navbar from "@/components/Navbar";
 
 export default {
@@ -71,6 +76,8 @@ export default {
   created() {
     document.title =
       ".:: เลือกประเภทการลา - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
+    localStorage.removeItem("catalog", "sick");
+    localStorage.removeItem("catalog", "personal");
   },
   data() {
     return {
@@ -80,6 +87,16 @@ export default {
         select: "เลือก"
       }
     };
+  },
+  methods: {
+    isSick() {
+      localStorage.setItem("catalog", "ลาป่วย");
+      router.push({ name: "Leave" });
+    },
+    isPersonal() {
+      localStorage.setItem("catalog", "ลากิจ");
+      router.push({ name: "Leave" });
+    }
   }
 };
 </script>
@@ -103,6 +120,7 @@ export default {
   background-clip: border-box;
   border: 0;
   border-radius: 0;
+  z-index: 2;
 }
 
 .card-footer {
