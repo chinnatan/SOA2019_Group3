@@ -102,11 +102,11 @@ export default {
     return {
       profile: {
         fullname: profileObj.firstname + " " + profileObj.lastname,
-        studentid: profileObj.studentid,
-        faculty: profileObj.studentfaculty,
-        studentyear: profileObj.studentyear,
-        branch: profileObj.studentbranch,
-        sect: profileObj.studentsect
+        studentid: profileObj.student_id,
+        faculty: profileObj.student_faculty,
+        studentyear: profileObj.student_year,
+        branch: profileObj.student_branch,
+        sect: profileObj.student_sect
       }
     };
   }

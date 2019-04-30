@@ -167,7 +167,12 @@
                                       class="anakotmai-medium-text p-form"
                                     >{{ labelLeaveTopic.comment }}</p>
                                     <div class="form-group">
-                                      <textarea class="form-control-input" rows="5" id="comment"></textarea>
+                                      <textarea
+                                        class="form-control-input"
+                                        rows="5"
+                                        id="comment"
+                                        v-model="inputLeaveTopic.comment"
+                                      ></textarea>
                                     </div>
                                   </div>
                                 </div>
@@ -193,18 +198,49 @@
                                   </div>
                                 </div>
                                 <div class="row">
-                                  <div class="col-md">
-                                    <p
-                                      class="anakotmai-medium-text p-form"
-                                    >{{ labelLeaveTopic.since }}</p>
-                                    <div class="form-group">
-                                      <input id="since" type="date" class="form-control-input">
+                                  <div v-if="catalog === 'ลากิจ'">
+                                    <div class="col-md">
+                                      <p
+                                        class="anakotmai-medium-text p-form"
+                                      >{{ labelLeaveTopic.since }}</p>
+                                      <div class="form-group">
+                                        <input
+                                          id="since"
+                                          type="date"
+                                          class="form-control-input"
+                                          v-model="inputLeaveTopic.since"
+                                          @change="calculateTotalDate()"
+                                          disabled
+                                        >
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div v-else>
+                                    <div class="col-md">
+                                      <p
+                                        class="anakotmai-medium-text p-form"
+                                      >{{ labelLeaveTopic.since }}</p>
+                                      <div class="form-group">
+                                        <input
+                                          id="since"
+                                          type="date"
+                                          class="form-control-input"
+                                          v-model="inputLeaveTopic.since"
+                                          @change="calculateTotalDate()"
+                                        >
+                                      </div>
                                     </div>
                                   </div>
                                   <div class="col-md">
                                     <p class="anakotmai-medium-text p-form">{{ labelLeaveTopic.to }}</p>
                                     <div class="form-group">
-                                      <input id="to" type="date" class="form-control-input">
+                                      <input
+                                        id="to"
+                                        type="date"
+                                        class="form-control-input"
+                                        v-model="inputLeaveTopic.to"
+                                        @change="calculateTotalDate()"
+                                      >
                                     </div>
                                   </div>
                                   <div class="col-md">
@@ -216,6 +252,7 @@
                                         id="total"
                                         type="text"
                                         class="form-control-input"
+                                        v-model="inputLeaveTopic.total"
                                         disabled
                                       >
                                     </div>
@@ -273,7 +310,7 @@
                                                   <select
                                                     name="subjectname"
                                                     class="custom-select"
-                                                    v-model="selected"
+                                                    v-model="line.subjectList"
                                                   >
                                                     <option
                                                       v-for="option in subjects"
@@ -285,7 +322,7 @@
                                                   <button
                                                     type="button"
                                                     class="btn btn-sm btn-danger anakotmai-medium-text"
-                                                    @click="removeLine"
+                                                    @click="removeLine(index)"
                                                     v-if="index + 1 != 1"
                                                   >ลบรายวิชา</button>
                                                 </td>
@@ -336,6 +373,7 @@
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
+var accountObj = JSON.parse(localStorage.getItem("account"));
 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
 export default {
@@ -351,20 +389,17 @@ export default {
       ".:: แบบฟอร์มการ" +
       localStorage.getItem("catalog") +
       " - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
+    this.getCurrentDate();
+    this.getSubjectByUserID(accountObj.account_id);
   },
   data() {
     return {
       lines: [],
       blockRemoval: true,
-      selected: "เลือกรายวิชา...",
       subjects: [
         {
-          label: "SOA",
-          value: "SOA"
-        },
-        {
-          label: "LIB",
-          value: "LIB"
+          label: null,
+          value: null
         }
       ],
       step: 1,
@@ -386,13 +421,13 @@ export default {
       inputPrivateTopic: {
         firstname: profileObj.firstname,
         lastname: profileObj.lastname,
-        studentid: profileObj.studentid,
-        term: profileObj.term,
-        schoolyear: profileObj.schoolyear,
-        studentyear: profileObj.studentyear,
-        studentgeneration: profileObj.studentgeneration,
-        studentbranch: profileObj.studentbranch,
-        studentdegree: profileObj.studentdegree
+        studentid: profileObj.student_id,
+        term: profileObj.student_term,
+        schoolyear: profileObj.school_year,
+        studentyear: profileObj.student_year,
+        studentgeneration: profileObj.student_generation,
+        studentbranch: profileObj.student_branch,
+        studentdegree: profileObj.student_degree
       },
       labelLeaveTopic: {
         comment: "ความประสงค์จะขอลาเรียนเนื่องจาก",
@@ -400,6 +435,13 @@ export default {
         since: "จึงขอลาเรียนตั้งแต่",
         to: "ถึง",
         total: "รวมเป็นเวลา (วัน)"
+      },
+      inputLeaveTopic: {
+        comment: null,
+        supportdocument: null,
+        since: null,
+        to: null,
+        total: null
       }
     };
   },
@@ -413,7 +455,13 @@ export default {
       this.step--;
     },
     next() {
-      this.step++;
+      if (this.step == 2 && this.inputLeaveTopic.total <= 0) {
+        this.alertDayDisplay();
+      } else if(this.step == 2 && (this.inputLeaveTopic.comment == null || this.file.name == "เลือกไฟล์...")) {
+        this.alertEmptyFieldsDisplay();
+      } else {
+        this.step++;
+      }
     },
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
@@ -423,11 +471,60 @@ export default {
       let checkEmptyLines = this.lines.filter(line => line.number === null);
       if (checkEmptyLines.length >= 1 && this.lines.length > 0) return;
       this.lines.push({
-        subjects: null
+        subjectList: null
       });
     },
     removeLine(lineId) {
       if (!this.blockRemoval) this.lines.splice(lineId, 1);
+    },
+    getSubjectByUserID(account_id) {
+      const path = "http://localhost:3001/api/subject/user/" + account_id;
+      axios
+        .get(path)
+        .then(res => {
+          var subjectArrary = res.data;
+          for (var subjectIndex in subjectArrary) {
+            this.subjects.push({
+              label: subjectArrary[subjectIndex].subject_name,
+              value: subjectArrary[subjectIndex].subject_name
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    calculateTotalDate() {
+      var since = new Date(this.inputLeaveTopic.since);
+      var to = new Date(this.inputLeaveTopic.to);
+      this.inputLeaveTopic.total = parseInt(
+        (to - since) / (24 * 3600 * 1000) + 1
+      );
+      console.log(parseInt((to - since) / (24 * 3600 * 1000)));
+    },
+    getCurrentDate() {
+      if (this.catalog == "ลากิจ") {
+        var dateFormat = require("dateformat");
+        let currentDate = new Date();
+        this.inputLeaveTopic.since = dateFormat(currentDate, "yyyy-mm-dd");
+      }
+    },
+    alertDayDisplay() {
+      // $swal function calls SweetAlert into the application with the specified configuration.
+      this.$swal({
+        title: "เกิดข้อผิดพลาด",
+        type: "warning",
+        text: "กรุณาเลือกช่วงเวลาของการลาให้ถูกต้อง",
+        showCloseButton: true
+      });
+    },
+    alertEmptyFieldsDisplay() {
+      this.$swal({
+        title: "เกิดข้อผิดพลาด",
+        type: "warning",
+        text: "กรอกข้อมูลให้ครบถ้วน",
+        showCloseButton: true
+      });
     }
   },
   mounted() {
@@ -435,7 +532,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 footer.selection {

@@ -127,7 +127,7 @@ export default {
           } else {
             this.login.messageAlert = "";
             localStorage.setItem("account", JSON.stringify(res.data));
-            this.getUserInformation(res.data.account_id);
+            this.getUserInformation(res.data.account_id, res.data.account_type);
             router.push({ name: "Selection" });
           }
         })
@@ -135,16 +135,29 @@ export default {
           console.log(error);
         });
     },
-    getUserInformation(account_id) {
-      const path = "http://localhost:3001/api/user/" + account_id;
-      axios
-        .get(path)
-        .then(res => {
-          localStorage.setItem("profile", JSON.stringify(res.data[0]));
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    getUserInformation(account_id, account_type) {
+      if (account_type == "student") {
+        const path =
+          "http://localhost:3001/api/user/" + account_id + "/student";
+        axios
+          .get(path)
+          .then(res => {
+            localStorage.setItem("profile", JSON.stringify(res.data[0]));
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        const path = "http://localhost:3001/api/user/" + account_id;
+        axios
+          .get(path)
+          .then(res => {
+            localStorage.setItem("profile", JSON.stringify(res.data[0]));
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     onLogin(evt) {
       evt.preventDefault();

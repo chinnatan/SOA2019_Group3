@@ -102,6 +102,7 @@ export default {
       localStorage.removeItem("profile");
       localStorage.removeItem("messageAlert");
       localStorage.removeItem("unAuth");
+      localStorage.removeItem("catalog");
       router.push({ name: "Login" });
     }
   },
