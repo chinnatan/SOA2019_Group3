@@ -4,13 +4,14 @@ var sha1 = require('sha1')
 
 // Connect Database
 var connect = MySQL.createConnection({
-    host: 'ihost.it.kmitl.ac.th',
-    user: 'it59070040_leave',
-    password: '35711mm38',
-    database: 'it59070040_leave'
+    host: '35.240.188.199',
+    port: '3307',
+    user: 'root',
+    password: 'soaeleaving',
+    database: 'authdatabase'
 })
 
-console.log("Auth Service Connected to Mysql");
+console.log("[Auth Service] Connected to Mysql");
 connect.connect();
 
 exports.login = (req, res) => {

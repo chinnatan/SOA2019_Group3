@@ -9,5 +9,6 @@ router.use(bodyParser.json());
 
 // Get User Information
 router.get("/:userid", userService.getUserById);
+router.get("/:userid/student", userService.getUserByIdWithStudent);
 
 module.exports = router;
