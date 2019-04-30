@@ -13,6 +13,7 @@
     "body-parser": "^1.18.3",
     "eureka-js-client": "^4.4.2",
     "express": "^4.16.4",
+    "mysql": "^2.17.1",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
