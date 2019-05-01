@@ -38,29 +38,17 @@
                   <div class="col-md-12">
                     <div class="row">
                       <div class="col-md-12 text-left">
-                        <h4 class="anakotmai-medium-text orange">จำนวนครั้งที่สามารถลาได้</h4>
+                        <h4 class="anakotmai-medium-text orange">จำนวนครั้งที่ลาไปแล้ว</h4>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div class="row">
+                        <div class="row" v-for="(line, index) in subjects" v-bind:key="index">
                           <div class="col-md-8 text-left">
-                            <p
-                              class="anakotmai-medium-text"
-                            >SEMINAR ON PROFESSIONAL COMMUNICATION SKILLS</p>
+                            <p class="anakotmai-medium-text">{{ line.subjectName }}</p>
                           </div>
                           <div class="col-md-4 text-right">
-                            <p class="anakotmai-medium-text">3 ครั้ง</p>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-8 text-left">
-                            <p
-                              class="anakotmai-medium-text"
-                            >INFORMATION TECHNOLOGY PROJECT MANAGEMENT</p>
-                          </div>
-                          <div class="col-md-4 text-right">
-                            <p class="anakotmai-medium-text">3 ครั้ง</p>
+                            <p class="anakotmai-medium-text">{{ line.count }} ครั้ง</p>
                           </div>
                         </div>
                       </div>
@@ -84,7 +72,9 @@
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
+var accountObj = JSON.parse(localStorage.getItem("account"));
 var profileObj = JSON.parse(localStorage.getItem("profile"));
+var subjectTest = []
 
 export default {
   name: "Profile",
@@ -97,6 +87,7 @@ export default {
   created() {
     document.title =
       ".:: ข้อมูลส่วนตัว - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
+    this.getNumberSubjectLeaveByUserId(accountObj.account_id);
   },
   data() {
     return {
@@ -107,8 +98,28 @@ export default {
         studentyear: profileObj.student_year,
         branch: profileObj.student_branch,
         sect: profileObj.student_sect
-      }
+      },
+      subjects: []
     };
+  },
+  methods: {
+    getNumberSubjectLeaveByUserId(accountid) {
+      const path = "http://localhost:3001/api/leave/" + accountid + "/count";
+      axios
+        .get(path)
+        .then(res => {
+          var subjectArrary = res.data;
+          for (var subjectIndex in subjectArrary) {
+            this.subjects.push({
+              subjectName: subjectArrary[subjectIndex].subject_name,
+              count: subjectArrary[subjectIndex].count
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   }
 };
 </script>

@@ -31,9 +31,6 @@
             <li class="nav-item">
               <router-link :to="'status'" class="nav-link">{{navbar.status}}</router-link>
             </li>
-            <li class="nav-item">
-              <router-link :to="'history'" class="nav-link">{{navbar.history}}</router-link>
-            </li>
           </ul>
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown">
@@ -76,7 +73,6 @@ export default {
         brand: "e - leaving",
         catalogy: "ประเภทการลา",
         status: "สถานะการลา",
-        history: "ประวัติการลา",
         username: ""
       }
     };
