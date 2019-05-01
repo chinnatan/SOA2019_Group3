@@ -68,6 +68,21 @@ exports.getStatus = (req, res) => {
     }
 }
 
+exports.getNumberSubjectLeave = (req, res) => {
+    var userid = req.params.userid
+
+    var sqlQuery = `select subject_name, count(*) as count, account_id from document_subject join document
+    on (document_subject.document_id = document.document_id) group by subject_name having account_id = ?`
+
+    connect.query(sqlQuery, [userid], function(err, results, fields) {
+        if(results.length) {
+            return res.status(200).json(results)
+        } else {
+            return res.status(400).json(err)
+        }
+    })
+}
+
 exports.postNewSickLeavedocument = (req, res) => {
     // For Mock
     // var docs = req.body

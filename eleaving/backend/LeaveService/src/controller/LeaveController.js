@@ -48,6 +48,8 @@ router.get("/:leaveid/status", leaveService.getStatus);
 router.post("/sick/send", upload.single('file'), leaveService.postNewSickLeavedocument);
 // Post New Personal Leavedocument
 router.post("/personal/send", upload.single('file'), leaveService.postNewPersonalLeavedocument);
+// Get Subject Count
+router.get("/:userid/count", leaveService.getNumberSubjectLeave);
 
 router.use(function (err, req, res, next) {
     if (err.code === "LIMIT_FILE_TYPES") {
