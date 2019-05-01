@@ -14,7 +14,7 @@ var connect = MySQL.createConnection({
     database: 'subjectdatabase'
 })
 
-console.log(`[Subject Service] Connected to Mysql [${HOST_MYSQL}:${PORT_MYSQL}]`);
+console.log(`[Subject Service] Connected to Mysql -> ${HOST_MYSQL}:${PORT_MYSQL}`);
 connect.connect();
 
 exports.getSubjectByUserId = (req, res) => {
@@ -42,7 +42,7 @@ exports.getSubjectByUserId = (req, res) => {
     if(userid == null) {
         return res.status(404)
     } else {
-        connect.query('select subject_code, subject_name, subject_day, subject_time from subjects sub \
+        connect.query('select subject_code, subject_name, subject_day, subject_time, sub_student.subject_sect from subjects sub \
             join subject_sect sub_sect \
             on (sub.subject_id = sub_sect.subject_id) \
             join subject_student sub_student \

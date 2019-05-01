@@ -39,7 +39,7 @@ const client = new Eureka({
 
 client.logger.level('debug');
 client.start(error => {
-    console.log(error || 'NodeJS Eureka client Started!');
+    console.log(error || '[API Gateway Service] Eureka client Started!');
 
     // Service discovery from Eureka server
     const authServiceInstance = client.getInstancesByAppId('auth-service');
@@ -92,13 +92,6 @@ client.start(error => {
     })
 
 });
-
-// Shared general logic: Authentication
-// app.use((req, res, next) => {
-//     // TODO: my authentication logic
-//     console.log(`Authentication: ${req.path}`)
-//     next()
-// })
 
 app.listen(PORT, HOST);
 console.log(`API Gateway Running on http://${HOST}:${PORT}`);

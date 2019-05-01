@@ -9,7 +9,7 @@ const app = express();
 
 // parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb'}));
 
 // Configuration
 const client = new Eureka({
@@ -43,7 +43,7 @@ const client = new Eureka({
 
 client.logger.level('debug');
 client.start((error) => {
-    console.log(error || 'Eureka client started');
+    console.log(error || '[Leave Service] Eureka client Started!');
 
     const leaveController = require('./src/controller/LeaveController')
     app.use("/", leaveController);

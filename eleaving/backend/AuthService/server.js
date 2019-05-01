@@ -50,7 +50,7 @@ const client = new Eureka({
 
 client.logger.level('debug');
 client.start((error) => {
-    console.log(error || 'Eureka client started');
+    console.log(error || '[Auth Service] Eureka client Started!');
 
     // Set CORS
     app.use((req, res, next) => {

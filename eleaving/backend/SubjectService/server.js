@@ -43,7 +43,7 @@ const client = new Eureka({
 
 client.logger.level('debug');
 client.start((error) => {
-    console.log(error || 'Eureka client started');
+    console.log(error || '[Subject Service] Eureka client Started!');
 
     const subjectController = require('./src/controller/SubjectController')
     app.use("/", subjectController)

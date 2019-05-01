@@ -2,16 +2,19 @@ const mockUser = require('../../data/mockUser');
 const _ = require('underscore');
 const MySQL = require('mysql')
 
+const HOST_MYSQL = '35.240.188.199'
+const PORT_MYSQL = '3308'
+
 // Connect Database
 var connect = MySQL.createConnection({
-    host: '35.240.188.199',
-    port: '3308',
+    host: HOST_MYSQL,
+    port: PORT_MYSQL,
     user: 'root',
     password: 'soaeleaving',
     database: 'userdatabase'
 })
 
-console.log("[User Service] Connected to Mysql");
+console.log(`[User Service] Connected to Mysql -> ${HOST_MYSQL}:${PORT_MYSQL}`);
 connect.connect();
 
 exports.getUserById = (req, res) => {
