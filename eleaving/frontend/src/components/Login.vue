@@ -81,6 +81,8 @@
 import axios from "axios";
 import router from "../router";
 
+var accountObj = JSON.parse(localStorage.getItem('account'))
+
 export default {
   name: "Login",
   beforeCreate() {
@@ -94,6 +96,10 @@ export default {
     document.title =
       ".:: เข้าสู่ระบบ - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
     this.checkMessageAlert();
+
+    if(accountObj != null) {
+      router.push({ name: 'Selection' })
+    }
   },
   data() {
     return {
@@ -160,10 +166,11 @@ export default {
       }
     },
     onLogin(evt) {
+      var sha1 = require('sha1');
       evt.preventDefault();
       const payload = {
         username: this.login.inputUsername,
-        password: this.login.inputPassword
+        password: sha1(this.login.inputPassword)
       };
       this.logins(payload);
     }

@@ -19,7 +19,11 @@
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-12 text-left">
-                            <form>
+                            <form
+                              method="POST"
+                              @submit.prevent="onSendDocument"
+                              enctype="multipart/form-data"
+                            >
                               <div v-if="step === 1">
                                 <h3 class="anakotmai-medium-text">ข้อมูลส่วนตัว</h3>
                                 <hr>
@@ -188,7 +192,7 @@
                                         class="custom-file-input"
                                         id="supportdocument"
                                         @change="handleFileUpload()"
-                                        accept="application/pdf, image/*"
+                                        accept="application/pdf"
                                       >
                                       <label
                                         class="custom-file-label"
@@ -345,6 +349,7 @@
                                     <button
                                       type="button"
                                       class="btn btn-success anakotmai-medium-text"
+                                      @click="onSendDocument()"
                                     >ยืนยัน</button>
                                   </div>
                                 </div>
@@ -370,6 +375,7 @@
 </template>
 
 <script>
+import router from "../router";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
@@ -389,19 +395,15 @@ export default {
       ".:: แบบฟอร์มการ" +
       localStorage.getItem("catalog") +
       " - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
-    this.getCurrentDate();
+    this.getTomorrowDate();
     this.getSubjectByUserID(accountObj.account_id);
   },
   data() {
     return {
+      error: false,
       lines: [],
       blockRemoval: true,
-      subjects: [
-        {
-          label: null,
-          value: null
-        }
-      ],
+      subjects: [],
       step: 1,
       file: {
         name: "เลือกไฟล์..."
@@ -442,7 +444,9 @@ export default {
         since: null,
         to: null,
         total: null
-      }
+      },
+      errorMessage: "",
+      countEmpty: 0
     };
   },
   watch: {
@@ -455,17 +459,35 @@ export default {
       this.step--;
     },
     next() {
-      if (this.step == 2 && this.inputLeaveTopic.total <= 0) {
-        this.alertDayDisplay();
-      } else if(this.step == 2 && (this.inputLeaveTopic.comment == null || this.file.name == "เลือกไฟล์...")) {
+      // ข้อมูลการลา
+      if (
+        this.step == 2 &&
+        (this.inputLeaveTopic.comment == "" || this.inputLeaveTopic.comment == null ||
+          this.file.name == "เลือกไฟล์..." || this.file.name == "" || this.file.name == null)
+      ) {
         this.alertEmptyFieldsDisplay();
+      } else if (this.step == 2 && this.inputLeaveTopic.total <= 0) {
+        this.alertDayDisplay();
       } else {
         this.step++;
       }
     },
     handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-      console.log((this.file = this.$refs.file.files[0]));
+      const allowedTypes = ["application/pdf"];
+      const file = this.$refs.file.files[0];
+      const MAX_SIZE = 600000;
+      const tooLarge = file.size > MAX_SIZE;
+
+      if (allowedTypes.includes(file.type) && !tooLarge) {
+        this.file = this.$refs.file.files[0];
+        this.error = false;
+      } else {
+        this.errorMessage = tooLarge
+          ? `ไฟล์มีขนาดใหญ่เกินไป. รองรับขนาดที่ ${MAX_SIZE / 1000}Kb`
+          : "รองรับไฟล์ PDF เท่านั้น";
+        this.alertErrorDisplay();
+        this.error = true;
+      }
     },
     addLine() {
       let checkEmptyLines = this.lines.filter(line => line.number === null);
@@ -500,13 +522,132 @@ export default {
       this.inputLeaveTopic.total = parseInt(
         (to - since) / (24 * 3600 * 1000) + 1
       );
-      console.log(parseInt((to - since) / (24 * 3600 * 1000)));
     },
-    getCurrentDate() {
+    getTomorrowDate() {
       if (this.catalog == "ลากิจ") {
         var dateFormat = require("dateformat");
-        let currentDate = new Date();
-        this.inputLeaveTopic.since = dateFormat(currentDate, "yyyy-mm-dd");
+        var currentDate = new Date();
+        var tomorrowDate = new Date();
+        tomorrowDate.setDate(currentDate.getDate() + 1);
+        this.inputLeaveTopic.since = dateFormat(tomorrowDate, "yyyy-mm-dd");
+      }
+    },
+    SendDocument(results) {
+      const formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("document", JSON.stringify(results));
+      formData.append("document_subject", JSON.stringify(this.lines));
+
+      if (this.catalog == "ลาป่วย") {
+        const path = "http://localhost:3001/api/leave/sick/send";
+
+        try {
+          axios
+            .post(path, formData)
+            .then(res => {
+              this.alertSuccessDisplay(res.data.success);
+              this.file = "";
+              this.error = false;
+            })
+            .catch(error => {
+              console.log(error);
+              this.errorMessage = error.response.data.error;
+              this.alertErrorDisplay();
+              thie.error = true;
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        const path = "http://localhost:3001/api/leave/personal/send";
+
+        try {
+          axios
+            .post(path, formData)
+            .then(res => {
+              this.alertSuccessDisplay(res.data.success);
+              this.file = "";
+              this.error = false;
+            })
+            .catch(error => {
+              console.log(error);
+              this.errorMessage = error.response.data.error;
+              this.alertErrorDisplay();
+              thie.error = true;
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    },
+    onSendDocument() {
+      var dateFormat = require("dateformat");
+      let currentDate = new Date();
+      var documentId;
+
+      // ข้อมูลรายวิชา
+      // ตรวจสอบช่องว่างในของรายวิชา
+      for (var count in this.lines) {
+        if (this.lines[count].subjectList == null) {
+          this.alertEmptyFieldsDisplay();
+          this.countEmpty++;
+        } else {
+          this.countEmpty = 0;
+        }
+      }
+
+      if (this.countEmpty == 0) {
+        if (this.catalog == "ลาป่วย") {
+          documentId =
+            "SD" +
+            dateFormat(currentDate, "yyyymmddssMM") +
+            accountObj.account_id;
+          const results = {
+            document_id: documentId,
+            document_date: dateFormat(currentDate, "yyyy-mm-dd"),
+            document_catalog: "sick",
+            firstname: this.inputPrivateTopic.firstname,
+            lastname: this.inputPrivateTopic.lastname,
+            student_id: this.inputPrivateTopic.studentid,
+            student_term: this.inputPrivateTopic.term,
+            school_year: this.inputPrivateTopic.schoolyear,
+            student_year: this.inputPrivateTopic.studentyear,
+            student_generation: this.inputPrivateTopic.studentgeneration,
+            student_branch: this.inputPrivateTopic.studentbranch,
+            student_degree: this.inputPrivateTopic.studentdegree,
+            comment: this.inputLeaveTopic.comment,
+            since: this.inputLeaveTopic.since,
+            to: this.inputLeaveTopic.to,
+            total: this.inputLeaveTopic.total,
+            account_id: accountObj.account_id
+          };
+          this.SendDocument(results);
+        } else {
+          documentId =
+            "PD" +
+            dateFormat(currentDate, "yyyymmddssMM") +
+            accountObj.account_id;
+          const results = {
+            document_id: documentId,
+            document_date: dateFormat(currentDate, "yyyy-mm-dd"),
+            document_catalog: "personal",
+            firstname: this.inputPrivateTopic.firstname,
+            lastname: this.inputPrivateTopic.lastname,
+            student_id: this.inputPrivateTopic.studentid,
+            student_term: this.inputPrivateTopic.term,
+            school_year: this.inputPrivateTopic.schoolyear,
+            student_year: this.inputPrivateTopic.studentyear,
+            student_generation: this.inputPrivateTopic.studentgeneration,
+            student_branch: this.inputPrivateTopic.studentbranch,
+            student_degree: this.inputPrivateTopic.studentdegree,
+            comment: this.inputLeaveTopic.comment,
+            since: this.inputLeaveTopic.since,
+            to: this.inputLeaveTopic.to,
+            total: this.inputLeaveTopic.total,
+            account_id: accountObj.account_id
+          };
+          this.SendDocument(results);
+        }
       }
     },
     alertDayDisplay() {
@@ -525,6 +666,30 @@ export default {
         text: "กรอกข้อมูลให้ครบถ้วน",
         showCloseButton: true
       });
+    },
+    alertSuccessDisplay(message) {
+      this.$swal({
+        title: "แจ้งเตือน",
+        type: "success",
+        text: message,
+        showCancelButton: false,
+        confirmButtonText: "OK",
+        showCloseButton: true,
+        showLoaderOnConfirm: true
+      }).then(result => {
+        if (result.value) {
+          router.push({ name: "Status" });
+        }
+      });
+    },
+    alertErrorDisplay(error) {
+      this.$swal({
+        title: "เกิดข้อผิดพลาด",
+        type: "error",
+        text: this.errorMessage,
+        showCloseButton: true
+      });
+      this.step = 2;
     }
   },
   mounted() {
