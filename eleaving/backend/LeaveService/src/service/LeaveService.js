@@ -59,23 +59,37 @@ exports.getLeavedocumentById = (req, res) => {
 }
 
 exports.getStatus = (req, res) => {
-    var filterLeavedocument = _.where(mockLeavedocument, { leavedocumentid: req.params.leaveid });
+    // For Mock
+    // var filterLeavedocument = _.where(mockLeavedocument, { leavedocumentid: req.params.leaveid });
 
-    if (filterLeavedocument[0] == null) {
-        return res.sendStatus(404);
-    } else {
-        return res.status(200).json(filterLeavedocument[0].subjectlist);
-    }
+    // if (filterLeavedocument[0] == null) {
+    //     return res.sendStatus(404);
+    // } else {
+    //     return res.status(200).json(filterLeavedocument[0].subjectlist);
+    // }
+
+    var userid = req.params.userid
+
+    var sqlQueryStatus = `select document.document_id, document.document_date, document.comment, document_subject.subject_name, document_subject.status from document join document_subject on (document.document_id = document_subject.document_id)
+    where account_id = ? order by document.document_date DESC`
+
+    connect.query(sqlQueryStatus, [userid], function (err, results, fields) {
+        if (results.length) {
+            return res.status(200).json(results)
+        } else {
+            return res.status(400).json(err)
+        }
+    })
 }
 
 exports.getNumberSubjectLeave = (req, res) => {
     var userid = req.params.userid
 
-    var sqlQuery = `select subject_name, count(*) as count, account_id from document_subject join document
+    var sqlQuerySubjectCount = `select subject_name, count(*) as count, account_id from document_subject join document
     on (document_subject.document_id = document.document_id) group by subject_name having account_id = ?`
 
-    connect.query(sqlQuery, [userid], function(err, results, fields) {
-        if(results.length) {
+    connect.query(sqlQuerySubjectCount, [userid], function (err, results, fields) {
+        if (results.length) {
             return res.status(200).json(results)
         } else {
             return res.status(400).json(err)

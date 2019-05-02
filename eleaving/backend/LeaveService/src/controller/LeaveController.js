@@ -43,7 +43,7 @@ router.get("/", leaveService.getAllLeavedocument);
 // Get Leavedocument By ID
 router.get("/:leaveid", leaveService.getLeavedocumentById);
 // Get Status from leavedocument By ID
-router.get("/:leaveid/status", leaveService.getStatus);
+router.get("/user/:userid/status", leaveService.getStatus);
 // Post New Sick Leavedocument
 router.post("/sick/send", upload.single('file'), leaveService.postNewSickLeavedocument);
 // Post New Personal Leavedocument
