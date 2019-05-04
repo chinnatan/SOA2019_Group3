@@ -40,7 +40,7 @@
                       <div class="col-md-12 text-left">
                         <h4
                           class="anakotmai-medium-text orange"
-                          v-if="account.account_type == 'student'"
+                          v-if="account.accountType == 'student'"
                         >จำนวนครั้งที่ลาไปแล้ว</h4>
                         <h4 class="anakotmai-medium-text orange" v-else>วิชาที่ทำการสอน</h4>
                       </div>
@@ -56,6 +56,11 @@
                           </div>
                           <div class="col-md-4 text-right" v-if="account.accountType == 'student'">
                             <p class="anakotmai-medium-text">{{ line.count }} ครั้ง</p>
+                          </div>
+                        </div>
+                        <div class="row" v-if="subjects.length == 0">
+                          <div class="col-md-12">
+                            <p class="anakotmai-medium-text">{{ messageSubjectNull }}</p>
                           </div>
                         </div>
                       </div>
@@ -116,7 +121,8 @@ export default {
         branch: profileObj.student_branch,
         sect: profileObj.student_sect
       },
-      subjects: []
+      subjects: [],
+      messageSubjectNull: "ไม่พบวิชาที่ทำการลา"
     };
   },
   methods: {
@@ -168,7 +174,7 @@ export default {
         });
     },
     checkAccountType() {
-      if (this.account.accountType === "student") {
+      if (this.account.accountType == "student") {
         this.getNumberSubjectLeaveByUserId(this.account.accountId);
       } else {
         this.getSubjectProfessorByUserId(this.account.accountId);

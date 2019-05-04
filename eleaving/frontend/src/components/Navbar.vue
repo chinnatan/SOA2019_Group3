@@ -93,7 +93,7 @@ export default {
       this.navbar.accountType = accountObj.account_type;
     },
     isAuth() {
-      if (accountObj == null) {
+      if (!accountObj) {
         localStorage.setItem("messageAlert", "กรุณาเข้าสู่ระบบก่อนใช้งาน");
         localStorage.setItem("unAuth", true);
         router.push({ name: "Login" });

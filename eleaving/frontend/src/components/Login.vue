@@ -97,9 +97,13 @@ export default {
       ".:: เข้าสู่ระบบ - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
     this.checkMessageAlert();
 
-    // if (accountObj != null) {
-    //   router.push({ name: "Selection" });
-    // }
+    if (accountObj) {
+      if (accountObj.account_type == "student") {
+        router.push({ name: "Selection" });
+      } else if (accountObj.account_type == "professor") {
+        router.push({ name: "Certificate" });
+      }
+    }
   },
   data() {
     return {
@@ -148,18 +152,18 @@ export default {
           .get(path)
           .then(res => {
             localStorage.setItem("profile", JSON.stringify(res.data[0]));
-            router.push({ name: "Selection" })
+            router.push({ name: "Selection" });
           })
           .catch(error => {
             console.log(error);
           });
-      } else if(account_type == "professor") {
+      } else if (account_type == "professor") {
         const path = "http://localhost:3001/api/user/" + account_id;
         axios
           .get(path)
           .then(res => {
             localStorage.setItem("profile", JSON.stringify(res.data[0]));
-            router.push({ name: "Certificate" })
+            router.push({ name: "Certificate" });
           })
           .catch(error => {
             console.log(error);

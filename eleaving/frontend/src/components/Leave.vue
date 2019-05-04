@@ -384,8 +384,8 @@ import router from "../router";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
-var accountObj = JSON.parse(localStorage.getItem("account"));
-var profileObj = JSON.parse(localStorage.getItem("profile"));
+var accountObj;
+var profileObj;
 
 export default {
   name: "Leave",
@@ -394,6 +394,12 @@ export default {
   },
   beforeCreate() {
     document.body.className = "";
+    accountObj = JSON.parse(localStorage.getItem("account"))
+    profileObj = JSON.parse(localStorage.getItem("profile"))
+    if(accountObj.account_type == 'professor') {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.")
+      router.push({ name: "Login" })
+    }
   },
   created() {
     document.title =
