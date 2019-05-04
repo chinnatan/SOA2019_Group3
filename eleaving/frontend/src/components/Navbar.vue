@@ -24,12 +24,17 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarEleavingToggle">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0" v-if="navbar.accountType === 'student'">
             <li class="nav-item">
               <router-link :to="'selection'" class="nav-link">{{navbar.catalogy}}</router-link>
             </li>
             <li class="nav-item">
               <router-link :to="'status'" class="nav-link">{{navbar.status}}</router-link>
+            </li>
+          </ul>
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0" v-else>
+            <li class="nav-item">
+              <router-link :to="'certificate'" class="nav-link">{{navbar.certificated}}</router-link>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -73,7 +78,9 @@ export default {
         brand: "e - leaving",
         catalogy: "ประเภทการลา",
         status: "สถานะการลา",
-        username: ""
+        certificated: "รับรองการลา",
+        username: "",
+        accountType: ""
       }
     };
   },
@@ -83,6 +90,7 @@ export default {
   methods: {
     getUser() {
       this.navbar.username = accountObj.username;
+      this.navbar.accountType = accountObj.account_type;
     },
     isAuth() {
       if (accountObj == null) {

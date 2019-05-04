@@ -65,6 +65,8 @@
 import router from "../router";
 import Navbar from "@/components/Navbar";
 
+var accountObj;
+
 export default {
   name: "Selection",
   components: {
@@ -72,6 +74,7 @@ export default {
   },
   beforeCreate() {
     document.body.className = "";
+    accountObj = JSON.parse(localStorage.getItem("account"));
   },
   created() {
     document.title =
@@ -85,7 +88,8 @@ export default {
         sick: "ลาป่วย",
         personal: "ลากิจ",
         select: "เลือก"
-      }
+      },
+      studentCondition: undefined
     };
   },
   methods: {

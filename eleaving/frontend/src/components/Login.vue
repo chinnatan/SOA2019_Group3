@@ -81,7 +81,7 @@
 import axios from "axios";
 import router from "../router";
 
-var accountObj = JSON.parse(localStorage.getItem('account'))
+var accountObj = JSON.parse(localStorage.getItem("account"));
 
 export default {
   name: "Login",
@@ -97,9 +97,9 @@ export default {
       ".:: เข้าสู่ระบบ - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
     this.checkMessageAlert();
 
-    if(accountObj != null) {
-      router.push({ name: 'Selection' })
-    }
+    // if (accountObj != null) {
+    //   router.push({ name: "Selection" });
+    // }
   },
   data() {
     return {
@@ -134,7 +134,6 @@ export default {
             this.login.messageAlert = "";
             localStorage.setItem("account", JSON.stringify(res.data));
             this.getUserInformation(res.data.account_id, res.data.account_type);
-            router.push({ name: "Selection" });
           }
         })
         .catch(error => {
@@ -149,16 +148,18 @@ export default {
           .get(path)
           .then(res => {
             localStorage.setItem("profile", JSON.stringify(res.data[0]));
+            router.push({ name: "Selection" })
           })
           .catch(error => {
             console.log(error);
           });
-      } else {
+      } else if(account_type == "professor") {
         const path = "http://localhost:3001/api/user/" + account_id;
         axios
           .get(path)
           .then(res => {
             localStorage.setItem("profile", JSON.stringify(res.data[0]));
+            router.push({ name: "Certificate" })
           })
           .catch(error => {
             console.log(error);
@@ -166,7 +167,7 @@ export default {
       }
     },
     onLogin(evt) {
-      var sha1 = require('sha1');
+      var sha1 = require("sha1");
       evt.preventDefault();
       const payload = {
         username: this.login.inputUsername,
