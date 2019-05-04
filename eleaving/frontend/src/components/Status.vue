@@ -207,7 +207,12 @@
     </div>
 
     <footer class="selection">
-      <img srcset="../assets/images/svg/footer-bottom.svg">
+      <img
+        src="../assets/images/logo-eleaving-with-text.png"
+        class="footer-logo"
+        width="10%"
+        height="10%"
+      >
     </footer>
   </div>
 </template>
@@ -216,7 +221,7 @@
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
-var accountObj = JSON.parse(localStorage.getItem("account"));
+var accountObj;
 
 export default {
   name: "Status",
@@ -225,6 +230,7 @@ export default {
   },
   beforeCreate() {
     document.body.className = "";
+    accountObj = JSON.parse(localStorage.getItem("account"));
   },
   created() {
     document.title =
@@ -336,20 +342,11 @@ export default {
 </script>
 
 <style scoped>
-footer.selection {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  min-width: 100%;
-  width: auto;
-  left: -10%;
-  right: -10%;
-}
-
 .card {
   border: 0;
   border-radius: 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: -1rem;
   z-index: 2;
 }
 

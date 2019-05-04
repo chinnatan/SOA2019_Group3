@@ -70,7 +70,12 @@
     </div>
 
     <footer class="selection">
-      <img srcset="../assets/images/svg/footer-bottom.svg">
+      <img
+        src="../assets/images/logo-eleaving-with-text.png"
+        class="img-fluid footer-logo"
+        width="10%"
+        height="10%"
+      >
     </footer>
   </div>
 </template>
@@ -174,16 +179,6 @@ export default {
 </script>
 
 <style scoped>
-footer.selection {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  min-width: 100%;
-  width: auto;
-  left: -10%;
-  right: -10%;
-}
-
 .bg-orange {
   width: 100%;
   background-image: linear-gradient(to bottom left, #f47932, #fe5c23);
@@ -198,10 +193,6 @@ footer.selection {
 
 .profile-form {
   padding: 5% 0% 30% 15%;
-}
-
-.footer-logo {
-  padding: 5% 5% 5% 5%;
 }
 
 .profile-panel {

@@ -369,7 +369,12 @@
     </div>
 
     <footer class="selection">
-      <img srcset="../assets/images/svg/footer-bottom.svg">
+      <img
+        src="../assets/images/logo-eleaving-with-text.png"
+        class="footer-logo"
+        width="10%"
+        height="10%"
+      >
     </footer>
   </div>
 </template>
@@ -699,17 +704,6 @@ export default {
 </script>
 
 <style scoped>
-footer.selection {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  min-width: 100%;
-  width: auto;
-  left: -10%;
-  right: -10%;
-  z-index: 1;
-}
-
 .p-form {
   font-size: 20px;
   margin-bottom: -0.1em;

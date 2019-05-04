@@ -56,7 +56,12 @@
     </div>
 
     <footer class="selection">
-      <img srcset="../assets/images/svg/footer-bottom.svg">
+      <img
+        src="../assets/images/logo-eleaving-with-text.png"
+        class="img-fluid footer-logo"
+        width="10%"
+        height="10%"
+      >
     </footer>
   </div>
 </template>
@@ -106,6 +111,10 @@ export default {
 </script>
 
 <style scoped>
+.footer-logo {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .content-selection {
   margin-top: 15vh;
   margin-bottom: 12vh;

@@ -18,7 +18,20 @@ body.login-page {
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-}  
+}
+
+.footer-logo {
+    margin-bottom: 1rem;
+}
+
+footer.selection {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    min-width: 100%;
+    width: auto;
+    z-index: 1;
+  }
 
 .anakotmai-medium-text {
     font-family: 'Anakotmai-Medium';

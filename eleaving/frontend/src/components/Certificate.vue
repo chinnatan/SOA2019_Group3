@@ -3,71 +3,84 @@
     <navbar></navbar>
 
     <div class="content-selection">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="anakotmai-medium-text">{{ certificateLabel.heading }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="container">
             <div class="row">
               <div class="col-md-12">
-                <h2 class="anakotmai-medium-text">{{ certificateLabel.heading }}</h2>
-              </div>
-            </div>
-            <div class="row" v-for="(line, index) in compareDocument" v-bind:key="index">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header anakotmai-medium-text text-left">
-                    <div class="row">
-                      <div
-                        class="col-md"
-                        v-if="line.documentCatalog == 'sick'"
-                      >{{ line.firstname }} ได้ส่งคำร้องขอลาป่วย</div>
-                      <div
-                        class="col-md"
-                        v-if="line.documentCatalog == 'personal'"
-                      >{{ line.firstname }} ได้ส่งคำร้องขอลากิจ</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md">
-                        <small>{{ line.subjectName }}</small>
+                <div class="row" v-for="(line, index) in compareDocument" v-bind:key="index">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-header anakotmai-medium-text text-left">
+                        <div class="row">
+                          <div
+                            class="col-md"
+                            v-if="line.documentCatalog == 'sick'"
+                          >{{ line.firstname }} ได้ส่งคำร้องขอลาป่วย</div>
+                          <div
+                            class="col-md"
+                            v-if="line.documentCatalog == 'personal'"
+                          >{{ line.firstname }} ได้ส่งคำร้องขอลากิจ</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md">
+                            <small>{{ line.subjectName }}</small>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md">
+                            <small>{{ line.documentId }} | {{ line.documentDate }}</small>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md">
-                        <small>{{ line.documentDate }}</small>
+                      <div class="card-body anakotmai-light-text">
+                        <div class="row">
+                          <div
+                            class="col-md-12 text-left"
+                          >{{ certificateLabel.comment }}: {{ line.comment }}</div>
+                        </div>
+                        <div class="row">
+                          <div
+                            class="col-md-12 text-left"
+                          >{{ certificateLabel.since }}: {{ line.since }} {{ certificateLabel.to }} {{ line.to }} {{ certificateLabel.total }} {{ line.total }} {{ certificateLabel.day }}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12 text-left">
+                            {{ certificateLabel.supportdocument }}:
+                            <a
+                              v-bind:href="hostForViewPDF + line.filepath"
+                              target="_blank"
+                            >คลิก</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer text-muted anakotmai-medium-text">
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          @click="isDecline(line.documentId, line.docSubId)"
+                        >ไม่อนุมัติ</button>
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          @click="isAccept(line.documentId, line.docSubId)"
+                        >อนุมัติ</button>
                       </div>
                     </div>
                   </div>
-                  <div class="card-body anakotmai-light-text">
-                    <div class="row">
-                      <div
-                        class="col-md-12 text-left"
-                      >{{ certificateLabel.comment }}: {{ line.comment }}</div>
-                    </div>
-                    <div class="row">
-                      <div
-                        class="col-md-12 text-left"
-                      >{{ certificateLabel.since }}: {{ line.since }} {{ certificateLabel.to }} {{ line.to }} {{ certificateLabel.total }} {{ line.total }} {{ certificateLabel.day }}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 text-left">
-                        {{ certificateLabel.supportdocument }}:
-                        <a
-                          v-bind:href="hostForViewPDF + line.filepath"
-                          target="_blank"
-                        >คลิก</a>
+                </div>
+                <div class="row" v-if="compareDocument.length === 0">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <p class="anakotmai-medium-text">{{ certificateLabel.documentNotfound }}</p>
                       </div>
                     </div>
-                  </div>
-                  <div class="card-footer text-muted anakotmai-medium-text">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      @click="isDecline(line.documentId, line.docSubId)"
-                    >ไม่อนุมัติ</button>
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      @click="isAccept(line.documentId, line.docSubId)"
-                    >อนุมัติ</button>
                   </div>
                 </div>
               </div>
@@ -78,7 +91,12 @@
     </div>
 
     <footer class="selection">
-      <img srcset="../assets/images/svg/footer-bottom.svg">
+      <img
+        src="../assets/images/logo-eleaving-with-text.png"
+        class="img-fluid footer-logo"
+        width="10%"
+        height="10%"
+      >
     </footer>
   </div>
 </template>
@@ -101,7 +119,7 @@ export default {
   },
   created() {
     document.title =
-      ".:: เลือกประเภทการลา - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
+      ".:: รับรองการลา - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
     this.compareSubject(accountObj.account_id);
     localStorage.removeItem("catalog", "sick");
     localStorage.removeItem("catalog", "personal");
@@ -116,7 +134,8 @@ export default {
         to: "ถึง",
         total: "รวมเป็นเวลา",
         day: "วัน",
-        supportdocument: "เอกสารประกอบการลา"
+        supportdocument: "เอกสารประกอบการลา",
+        documentNotfound: "ไม่มีข้อมูลที่ต้องทำการรับรอง"
       },
       subjects: [
         {
@@ -263,24 +282,16 @@ export default {
 
 <style scoped>
 .content-selection {
-  margin-top: 15vh;
+  margin-top: 9vh;
   margin-bottom: 12vh;
+  overflow-x: hidden;
 }
 
 .card {
+  background-color: #ffffff;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
   z-index: 2;
-}
-
-footer.selection {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  min-width: 100%;
-  width: auto;
-  left: -10%;
-  right: -10%;
 }
 </style>
 
