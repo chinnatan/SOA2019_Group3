@@ -16,10 +16,10 @@
                 <div class="row">
                   <div class="col-md-12">
                     <h4 class="anakotmai-medium-text white">{{ profile.fullname }}</h4>
-                    <p class="anakotmai-medium-text" v-if="account.account_type == 'student'">
+                    <p class="anakotmai-medium-text" v-if="account.accountType == 'student'">
                       <small>{{ profile.studentid }}</small>
                     </p>
-                    <p class="anakotmai-medium-text" v-if="account.account_type == 'student'">
+                    <p class="anakotmai-medium-text" v-if="account.accountType == 'student'">
                       คณะ {{ profile.faculty }}
                       <br>
                       ชั้นปีที่ {{ profile.studentyear }}
@@ -48,7 +48,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="row" v-for="(line, index) in subjects" v-bind:key="index">
-                          <div class="col-md-8 text-left" v-if="account.account == 'student'">
+                          <div class="col-md-8 text-left" v-if="account.accountType == 'student'">
                             <p class="anakotmai-medium-text">{{ line.subjectName }}</p>
                           </div>
                           <div class="col-md-12 text-left" v-else>
@@ -79,9 +79,8 @@
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 
-var accountObj = JSON.parse(localStorage.getItem("account"));
-var profileObj = JSON.parse(localStorage.getItem("profile"));
-var subjectTest = [];
+var accountObj;
+var profileObj;
 
 export default {
   name: "Profile",
@@ -90,11 +89,13 @@ export default {
   },
   beforeCreate() {
     document.body.className = "";
+    accountObj = JSON.parse(localStorage.getItem("account"));
+    profileObj = JSON.parse(localStorage.getItem("profile"))
   },
   created() {
     document.title =
       ".:: ข้อมูลส่วนตัว - ระบบลาเรียนออนไลน์ | คณะเทคโนโลยีสารสนเทศ ::.";
-      this.checkAccountType()
+    this.checkAccountType();
   },
   data() {
     return {
@@ -116,16 +117,28 @@ export default {
   methods: {
     getNumberSubjectLeaveByUserId(accountid) {
       const path = "http://localhost:3001/api/leave/" + accountid + "/count";
+      const subjectPath = "http://localhost:3001/api/subject/user/" + accountid;
+
       axios
         .get(path)
         .then(res => {
-          var subjectArrary = res.data;
-          for (var subjectIndex in subjectArrary) {
-            this.subjects.push({
-              subjectName: subjectArrary[subjectIndex].subject_name,
-              count: subjectArrary[subjectIndex].count
-            });
-          }
+          axios.get(subjectPath).then(subjectRes => {
+            var subjectCountArray = res.data;
+            var subjectArray = subjectRes.data;
+            for (var subjectCountIndex in subjectCountArray) {
+              for (var subjectIndex in subjectArray) {
+                if (
+                  subjectArray[subjectIndex].subject_name ===
+                  subjectCountArray[subjectCountIndex].subject_name
+                ) {
+                  this.subjects.push({
+                    subjectName: subjectCountArray[subjectCountIndex].subject_name,
+                    count: subjectCountArray[subjectCountIndex].count
+                  });
+                }
+              }
+            }
+          });
         })
         .catch(error => {
           console.log(error);
@@ -150,7 +163,7 @@ export default {
         });
     },
     checkAccountType() {
-      if (this.account.accountType == "student") {
+      if (this.account.accountType === "student") {
         this.getNumberSubjectLeaveByUserId(this.account.accountId);
       } else {
         this.getSubjectProfessorByUserId(this.account.accountId);

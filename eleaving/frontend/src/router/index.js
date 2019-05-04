@@ -6,7 +6,6 @@ import Status from '@/components/Status'
 import Profile from '@/components/Profile'
 import Leave from '@/components/Leave'
 import Notfound from '@/components/Notfound'
-import Notpermission from '@/components/Notpermission'
 import Certificate from '@/components/Certificate'
 import VueRouter from 'vue-router';
 
