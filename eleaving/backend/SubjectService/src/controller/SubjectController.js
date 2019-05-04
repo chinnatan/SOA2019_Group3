@@ -7,7 +7,8 @@ var bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({ extended : true }));
 router.use(bodyParser.json());
 
-// Get User Information
+// Get Subject Information
 router.get("/user/:userid", subjectService.getSubjectByUserId);
+router.get("/user/:userid/professor", subjectService.getSubjectProfessorByUserId);
 
 module.exports = router;

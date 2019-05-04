@@ -50,6 +50,10 @@ router.post("/sick/send", upload.single('file'), leaveService.postNewSickLeavedo
 router.post("/personal/send", upload.single('file'), leaveService.postNewPersonalLeavedocument);
 // Get Subject Count
 router.get("/:userid/count", leaveService.getNumberSubjectLeave);
+// View File PDF
+router.get("/uploads/:filename", leaveService.viewPDF);
+// Update Status Document
+router.post("/status/update", leaveService.updateStatus)
 
 router.use(function (err, req, res, next) {
     if (err.code === "LIMIT_FILE_TYPES") {

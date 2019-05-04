@@ -1,4 +1,6 @@
 const MySQL = require('mysql')
+const fs = require('fs')
+const path = require('path')
 const mockLeavedocument = require('../../data/mockLeavedocument');
 const _ = require('underscore');
 
@@ -25,7 +27,7 @@ exports.getAllLeavedocument = (req, res) => {
     //     return res.status(200).json(mockLeavedocument);
     // }
 
-    connect.query('select * from document join document_subject on (document.document_id = document_subject.document_id)', function (err, results, fields) {
+    connect.query('select * from document join document_subject on (document.document_id = document_subject.document_id) Order by document_date DESC', function (err, results, fields) {
         if (results.length) {
             console.log('GET DATA COMPLETE')
             return res.status(200).json(results)
@@ -97,6 +99,44 @@ exports.getNumberSubjectLeave = (req, res) => {
     })
 }
 
+exports.viewPDF = (req, res) => {
+    var filename = req.params.filename
+    var filepath = '../LeaveService/src/controller/uploads/' + filename
+
+    console.log(path.resolve(filepath))
+
+    fs.readFile(filepath, function (err, data) {
+        res.contentType("application/pdf");
+        res.status(200).send(data);
+    })
+}
+
+exports.updateStatus = (req, res) => {
+    var status = req.body.status
+    var documentId = req.body.documentId
+    var docSubjectId = req.body.documentSubjectId
+
+    if(status == "accept") {
+        var sqlUpdateStatus = `update document_subject set status = 'อนุมัติ' where document_id = ? and doc_subject_id = ?`
+        connect.query(sqlUpdateStatus, [documentId, docSubjectId], function(err,results,fields) {
+            if(!err) {
+                return res.status(200).json({messageAlert: "ดำเนินการเรียบร้อย"})
+            } else {
+                return res.status(400)
+            }
+        })
+    } else {
+        var sqlUpdateStatus = `update document_subject set status = 'ไม่อนุมัติ' where document_id = ? and doc_subject_id = ?`
+        connect.query(sqlUpdateStatus, [documentId, docSubjectId], function(err,results,fields) {
+            if(!err) {
+                return res.status(200).json({messageAlert: "ดำเนินการเรียบร้อย"})
+            } else {
+                return res.status(400)
+            }
+        })
+    }
+}
+
 exports.postNewSickLeavedocument = (req, res) => {
     // For Mock
     // var docs = req.body
@@ -117,7 +157,7 @@ exports.postNewSickLeavedocument = (req, res) => {
     var studentbranch = document.student_branch;
     var studentdegree = document.student_degree;
     var comment = document.comment;
-    var filepath = req.file.path;
+    var filepath = req.file.filename;
     var since = document.since;
     var to = document.to;
     var total = document.total;
@@ -180,7 +220,7 @@ exports.postNewPersonalLeavedocument = (req, res) => {
     var studentbranch = document.student_branch;
     var studentdegree = document.student_degree;
     var comment = document.comment;
-    var filepath = req.file.path;
+    var filepath = req.file.filename;
     var since = document.since;
     var to = document.to;
     var total = document.total;
