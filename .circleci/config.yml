@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  user-service:
+    working_directory: ~/SOA2019_Group3/backend/UserService
+    docker:
+      - image: circleci/node:4.8.2 # ...with this image as the primary container; this is where all `steps` will run
+    steps:
+      - checkout:
+          path: ~/SOA2019_Group3
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run: # run tests
+          name: test
+          command: npm test
+      - run: # run coverage report
+          name: code-coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - user-service
