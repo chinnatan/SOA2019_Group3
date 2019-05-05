@@ -1,7 +1,6 @@
 const MySQL = require('mysql')
 const fs = require('fs')
 const path = require('path')
-const mockLeavedocument = require('../../data/mockLeavedocument');
 const _ = require('underscore');
 
 const HOST_MYSQL = '35.240.188.199'
@@ -20,56 +19,31 @@ console.log(`[Leave Service] Connected to Mysql -> ${HOST_MYSQL}:${PORT_MYSQL}`)
 connect.connect();
 
 exports.getAllLeavedocument = (req, res) => {
-    // For Mock
-    // if (mockLeavedocument == "") {
-    //     return res.sendStatus(404);
-    // } else {
-    //     return res.status(200).json(mockLeavedocument);
-    // }
-
     connect.query('select * from document join document_subject on (document.document_id = document_subject.document_id) Order by document_date DESC', function (err, results, fields) {
         if (results.length) {
             console.log('GET DATA COMPLETE')
             return res.status(200).json(results)
         } else {
-            return res.status(404)
+            return res.status(404).json(err)
         }
     })
 }
 
 exports.getLeavedocumentById = (req, res) => {
-    // For Mock
-    // var filterLeavedocument = _.where(mockLeavedocument, { leavedocumentid: req.params.leaveid });
-
-    // if (filterLeavedocument == "") {
-    //     return res.sendStatus(404);
-    // } else {
-    //     return res.status(200).json(filterLeavedocument);
-    // }
-
     var documentid = req.params.leaveid
 
     connect.query('select * from document join document_subject on (document.document_id = document_subject.document_id) \
-    where document_id = ?', [documentid], function (err, results, fields) {
+    where document.document_id = ?', [documentid], function (err, results, fields) {
             if (results.length) {
                 console.log('GET DATA COMPLETE')
                 return res.status(200).json(results)
             } else {
-                return res.status(404)
+                return res.status(404).json(err)
             }
         })
 }
 
 exports.getStatus = (req, res) => {
-    // For Mock
-    // var filterLeavedocument = _.where(mockLeavedocument, { leavedocumentid: req.params.leaveid });
-
-    // if (filterLeavedocument[0] == null) {
-    //     return res.sendStatus(404);
-    // } else {
-    //     return res.status(200).json(filterLeavedocument[0].subjectlist);
-    // }
-
     var userid = req.params.userid
 
     var sqlQueryStatus = `select document.document_id, document.document_date, document.comment, document_subject.subject_name, document_subject.status from document join document_subject on (document.document_id = document_subject.document_id)
@@ -88,7 +62,7 @@ exports.getNumberSubjectLeave = (req, res) => {
     var userid = req.params.userid
 
     var sqlQuerySubjectCount = `select subject_name, count(*) as count, account_id from document_subject join document
-    on (document_subject.document_id = document.document_id) group by subject_name having account_id = ?`
+    on (document_subject.document_id = document.document_id) where status = 'อนุมัติ' group by subject_name having account_id = ?`
 
     connect.query(sqlQuerySubjectCount, [userid], function (err, results, fields) {
         if (results.length) {
@@ -101,7 +75,7 @@ exports.getNumberSubjectLeave = (req, res) => {
 
 exports.viewPDF = (req, res) => {
     var filename = req.params.filename
-    var filepath = '../LeaveService/src/controller/uploads/' + filename
+    var filepath = '/src/controller/uploads/' + filename
 
     console.log(path.resolve(filepath))
 
@@ -119,10 +93,10 @@ exports.updateStatus = (req, res) => {
     if(status == "accept") {
         var sqlUpdateStatus = `update document_subject set status = 'อนุมัติ' where document_id = ? and doc_subject_id = ?`
         connect.query(sqlUpdateStatus, [documentId, docSubjectId], function(err,results,fields) {
-            if(!err) {
+            if(results) {
                 return res.status(200).json({messageAlert: "ดำเนินการเรียบร้อย"})
             } else {
-                return res.status(400)
+                return res.status(400).json({messageAlert: "เกิดข้อผิดพลาด"})
             }
         })
     } else {
@@ -138,11 +112,6 @@ exports.updateStatus = (req, res) => {
 }
 
 exports.postNewSickLeavedocument = (req, res) => {
-    // For Mock
-    // var docs = req.body
-    // mockLeavedocument.push(docs)
-    // return res.status(201).send({isCreateNewSickLeavedocument:true})
-
     // Document
     var document = JSON.parse(req.body.document);
     var documentid = document.document_id;
@@ -201,11 +170,6 @@ exports.postNewSickLeavedocument = (req, res) => {
 }
 
 exports.postNewPersonalLeavedocument = (req, res) => {
-    // For Mock
-    // var docs = req.body
-    // mockLeavedocument.push(docs)
-    // return res.status(201).send({ isCreateNewPersonalLeavedocument: true })
-
     // Document
     var document = JSON.parse(req.body.document);
     var documentid = document.document_id;

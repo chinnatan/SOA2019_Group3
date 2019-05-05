@@ -25,15 +25,14 @@ exports.login = (req, res) => {
         connect.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (err, results, fields) {
             console.log(results);
             if (results.length) {
-                console.log("Login success");
                 res.status(200).send({"account_id": results[0].account_id, "username": results[0].username, "account_type": results[0].account_type, "isLogin": true})
             } else {
-                res.status(200).send({"isLogin": 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'});
+                res.status(400).send({"isLogin": 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'});
             }
             res.end();
         });
     } else {
-        res.status(200).send({"isLogin": 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'});
+        res.status(400).send({"isLogin": 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'});
         res.end();
     }
 }

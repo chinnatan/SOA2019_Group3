@@ -1,0 +1,8 @@
+apps:
+  - script   : 'server.js'
+    name     : 'subjectservice'
+    exec_mode: 'cluster'
+    instances: 1
+    env_production:
+      PORT: 3003
+      NODE_ENV: 'production'

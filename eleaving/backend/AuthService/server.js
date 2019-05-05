@@ -23,7 +23,7 @@ const client = new Eureka({
     // application instance information
     instance: {
         app: 'auth-service',
-        hostName: 'localhost',
+        hostName: '35.240.188.199',
         ipAddr: '127.0.0.1',
         statusPageUrl: 'http://localhost:' + PORT,
         vipAddress: 'auth-service',
@@ -42,7 +42,7 @@ const client = new Eureka({
     },
     eureka: {
         // Eureka server
-        host: 'localhost',
+        host: '35.240.188.199',
         port: 8761,
         servicePath: '/eureka/apps/',
     },
@@ -51,21 +51,10 @@ const client = new Eureka({
 client.logger.level('debug');
 client.start((error) => {
     console.log(error || '[Auth Service] Eureka client Started!');
-
-    // Set CORS
-    app.use((req, res, next) => {
-        const allowedOrigins = [
-            'http://localhost:8080/'
-        ];
-        if (!allowedOrigins.includes(req.headers.origin)) {
-            res.header("Access-Control-Allow-Origin", req.headers.origin);
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        }
-        return next();
-    })
-    const authController = require('./src/controller/AuthController')
-    app.use("/", authController);
 });
+
+const authController = require('./src/controller/AuthController')
+    app.use("/", authController);
 
 app.listen(PORT, HOST);
 console.log(`Auth Service Running on http://${HOST}:${PORT}`);

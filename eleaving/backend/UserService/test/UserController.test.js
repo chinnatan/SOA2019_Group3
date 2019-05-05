@@ -1,9 +1,9 @@
 // Testing User
 
-const server = require('../app');
+const server = require('../server');
 const request = require('supertest')
 
-describe('/user', () => {
+describe('/', () => {
     beforeAll(async () => {
         console.log('change port to 3001 to test')
     })
@@ -13,45 +13,85 @@ describe('/user', () => {
         console.log('test complete & server close')
     })
 
-    describe('GET /:id with correct', () => {
+    describe('GET /api/user/:userid with correct', () => {
         it('should return user information by id', async () => {
-            const res = await request(server).get('/user/1')
+            const res = await request(server).get('/1')
             expect(res.body).toEqual([
                 {
-                    "userid": 1,
-                    "username": "it59070040",
+                    "account_id": 1,
                     "firstname": "ชินธันย์",
-                    "lastname": "ชาติทอง",
-                    "studentid": "59070040",
-                    "term": 2,
-                    "schoolyear": 2561,
-                    "studentyear": 3,
-                    "studentgeneration": 14,
-                    "studentbranch": "Information Technology",
-                    "studentdegree": "ปริญญาตรี"
+                    "lastname": "ชาติทอง"
                 }
             ])
         })
     })
 
-    describe('GET /:id with incorrect', () => {
+    describe('GET /api/user/:userid with incorrect', () => {
         it('should return user information by id', async () => {
-            const res = await request(server).get('/user/2')
+            const res = await request(server).get('/2')
             expect(res.body).toEqual([
                 {
-                    "userid": 1,
-                    "username": "it59070040",
+                    "account_id": 1,
                     "firstname": "ชินธันย์",
-                    "lastname": "ชาติทอง",
-                    "studentid": "59070040",
-                    "term": 2,
-                    "schoolyear": 2561,
-                    "studentyear": 3,
-                    "studentgeneration": 14,
-                    "studentbranch": "Information Technology",
-                    "studentdegree": "ปริญญาตรี"
+                    "lastname": "ชาติทอง"
                 }
             ])
+        })
+    })
+
+    describe('GET /api/user/:userid/student with correct', () => {
+        it('should return user information by id', async () => {
+            const res = await request(server).get('/1/student')
+            expect(res.body).toEqual([
+                {
+                    "firstname": "ชินธันย์",
+                    "lastname": "ชาติทอง",
+                    "student_id": "59070040",
+                    "student_term": 2,
+                    "student_year": 3,
+                    "student_generation": 14,
+                    "student_branch": "เทคโนโลยีสารสนเทศ",
+                    "student_sect": "วิศวกรรมซอฟต์แวร์",
+                    "student_faculty": "เทคโนโลยีสารสนเทศ",
+                    "student_degree": "ปริญญาตรี",
+                    "school_year": 2561
+                }
+            ])
+        })
+    })
+
+    describe('GET /api/user/:userid/student with incorrect', () => {
+        it('should return user information by id', async () => {
+            const res = await request(server).get('/1/student')
+            expect(res.body).toEqual([
+                {
+                    "firstname": "กลวัชร",
+                    "lastname": "กาลิกานนท์",
+                    "student_id": "59070008",
+                    "student_term": 2,
+                    "student_year": 3,
+                    "student_generation": 14,
+                    "student_branch": "เทคโนโลยีสารสนเทศ",
+                    "student_sect": "วิศวกรรมซอฟต์แวร์",
+                    "student_faculty": "เทคโนโลยีสารสนเทศ",
+                    "student_degree": "ปริญญาตรี",
+                    "school_year": 2561
+                }
+            ])
+        })
+    })
+
+    describe('GET /api/user/:userid/ NOT FOUND', () => {
+        it('should return user information by id', async () => {
+            const res = await request(server).get('/100')
+            expect(res.body).toEqual(404)
+        })
+    })
+
+    describe('GET /api/user/:userid/student NOT FOUND', () => {
+        it('should return user information by id', async () => {
+            const res = await request(server).get('/100/student')
+            expect(res.body).toEqual(404)
         })
     })
 })

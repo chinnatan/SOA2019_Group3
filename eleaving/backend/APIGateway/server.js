@@ -14,7 +14,7 @@ const client = new Eureka({
     // application instance information
     instance: {
         app: 'api-gateway',
-        hostName: 'localhost',
+        hostName: '35.240.188.199',
         ipAddr: '127.0.0.1',
         statusPageUrl: 'http://localhost:' + PORT,
         vipAddress: 'api-gateway',
@@ -31,7 +31,7 @@ const client = new Eureka({
     },
     eureka: {
         // Eureka server
-        host: 'localhost',
+        host: '35.240.188.199',
         port: 8761,
         servicePath: '/eureka/apps/',
     },

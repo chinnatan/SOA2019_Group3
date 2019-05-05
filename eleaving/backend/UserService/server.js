@@ -16,7 +16,7 @@ const client = new Eureka({
     // application instance information
     instance: {
         app: 'user-service',
-        hostName: 'localhost',
+        hostName: '35.240.188.199',
         ipAddr: '127.0.0.1',
         statusPageUrl: 'http://localhost:' + PORT,
         vipAddress: 'user-service',
@@ -35,7 +35,7 @@ const client = new Eureka({
     },
     eureka: {
         // Eureka server
-        host: 'localhost',
+        host: '35.240.188.199',
         port: 8761,
         servicePath: '/eureka/apps/',
     },
@@ -44,12 +44,10 @@ const client = new Eureka({
 client.logger.level('debug');
 client.start((error) => {
     console.log(error || 'Eureka client started');
-
-    const userController = require('./src/controller/UserController')
-    app.use("/", userController);
 });
 
-
+const userController = require('./src/controller/UserController')
+app.use("/", userController);
 
 app.listen(PORT, HOST);
 console.log(`User Service Running on http://${HOST}:${PORT}`);
