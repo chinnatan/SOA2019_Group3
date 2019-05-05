@@ -223,6 +223,8 @@ import axios from "axios";
 import Navbar from "@/components/Navbar";
 
 var accountObj;
+var HOST;
+var PORT;
 
 export default {
   name: "Status",
@@ -236,6 +238,8 @@ export default {
       alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.")
       router.push({ name: "Login" })
     }
+    HOST = "35.240.188.199";
+    PORT = "3001";
   },
   created() {
     document.title =
@@ -288,7 +292,7 @@ export default {
     getStatus(accountid) {
       var dateFormat = require("dateformat");
       const path =
-        "http://localhost:3001/api/leave/user/" + accountid + "/status";
+        "http://" + HOST + ":" + PORT + "/api/leave/user/" + accountid + "/status";
 
       try {
         axios

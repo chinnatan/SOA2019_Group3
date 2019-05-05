@@ -91,6 +91,8 @@ import Navbar from "@/components/Navbar";
 
 var accountObj;
 var profileObj;
+var HOST;
+var PORT;
 
 export default {
   name: "Profile",
@@ -101,6 +103,8 @@ export default {
     document.body.className = "";
     accountObj = JSON.parse(localStorage.getItem("account"));
     profileObj = JSON.parse(localStorage.getItem("profile"))
+    HOST = "35.240.188.199";
+    PORT = "3001";
   },
   created() {
     document.title =
@@ -122,13 +126,13 @@ export default {
         sect: profileObj.student_sect
       },
       subjects: [],
-      messageSubjectNull: "ไม่พบวิชาที่ทำการลา"
+      messageSubjectNull: "ไม่พบรายวิชา"
     };
   },
   methods: {
     getNumberSubjectLeaveByUserId(accountid) {
-      const path = "http://localhost:3001/api/leave/" + accountid + "/count";
-      const subjectPath = "http://localhost:3001/api/subject/user/" + accountid;
+      const path = "http://" + HOST + ":" + PORT + "/api/leave/" + accountid + "/count";
+      const subjectPath = "http://" + HOST + ":" + PORT + "/api/subject/user/" + accountid;
 
       axios
         .get(path)
@@ -157,7 +161,7 @@ export default {
     },
     getSubjectProfessorByUserId(accountid) {
       const path =
-        "http://localhost:3001/api/subject/user/" + accountid + "/professor";
+        "http://" + HOST + ":" + PORT + "/api/subject/user/" + accountid + "/professor";
 
       axios
         .get(path)

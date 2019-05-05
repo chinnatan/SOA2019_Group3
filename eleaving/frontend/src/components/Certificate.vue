@@ -107,6 +107,8 @@ import axios from "axios";
 import Navbar from "@/components/Navbar";
 
 var accountObj;
+var HOST;
+var PORT;
 
 export default {
   name: "Certificate",
@@ -120,6 +122,8 @@ export default {
       alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.")
       router.push({ name: "Login" })
     }
+    HOST = "35.240.188.199";
+    PORT = "3001";
   },
   created() {
     document.title =
@@ -130,7 +134,7 @@ export default {
   },
   data() {
     return {
-      hostForViewPDF: "http://localhost:3001/api/leave/uploads/",
+      hostForViewPDF: "http://" + HOST + ":" + PORT + "/api/leave/uploads/",
       certificateLabel: {
         heading: "รับรองการลา",
         comment: "มีความประสงค์ขอลาเรียนเนื่องจาก",
@@ -156,8 +160,8 @@ export default {
       var dateFormat = require("dateformat");
 
       const subjectPath =
-        "http://localhost:3001/api/subject/user/" + accountid + "/professor";
-      const documentPath = "http://localhost:3001/api/leave/";
+        "http://" + HOST + ":" + PORT + "/api/subject/user/" + accountid + "/professor";
+      const documentPath = "http://" + HOST + ":" + PORT + "/api/leave/";
 
       axios
         .get(subjectPath)
@@ -211,7 +215,7 @@ export default {
         });
     },
     sendAccept(results) {
-      const path = "http://localhost:3001/api/leave/status/update";
+      const path = "http://" + HOST + ":" + PORT + "/api/leave/status/update";
 
       const formData = new FormData();
       formData.append("document", JSON.stringify(results));
@@ -230,7 +234,7 @@ export default {
       }
     },
     sendDecline(results) {
-      const path = "http://localhost:3001/api/leave/status/update";
+      const path = "http://" + HOST + ":" + PORT + "/api/leave/status/update";
 
       const formData = new FormData();
       formData.append("document", JSON.stringify(results));

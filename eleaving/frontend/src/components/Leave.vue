@@ -386,6 +386,8 @@ import Navbar from "@/components/Navbar";
 
 var accountObj;
 var profileObj;
+var HOST;
+var PORT;
 
 export default {
   name: "Leave",
@@ -400,6 +402,8 @@ export default {
       alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.")
       router.push({ name: "Login" })
     }
+    HOST = "35.240.188.199";
+    PORT = "3001";
   },
   created() {
     document.title =
@@ -511,7 +515,7 @@ export default {
       if (!this.blockRemoval) this.lines.splice(lineId, 1);
     },
     getSubjectByUserID(account_id) {
-      const path = "http://localhost:3001/api/subject/user/" + account_id;
+      const path = "http://" + HOST + ":" + PORT + "/api/subject/user/" + account_id;
       axios
         .get(path)
         .then(res => {
@@ -550,7 +554,7 @@ export default {
       formData.append("document_subject", JSON.stringify(this.lines));
 
       if (this.catalog == "ลาป่วย") {
-        const path = "http://localhost:3001/api/leave/sick/send";
+        const path = "http://" + HOST + ":" + PORT + "/api/leave/sick/send";
 
         try {
           axios
@@ -570,7 +574,7 @@ export default {
           console.log(err);
         }
       } else {
-        const path = "http://localhost:3001/api/leave/personal/send";
+        const path = "http://" + HOST + ":" + PORT + "/api/leave/personal/send";
 
         try {
           axios

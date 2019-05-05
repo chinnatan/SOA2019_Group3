@@ -81,7 +81,9 @@
 import axios from "axios";
 import router from "../router";
 
-var accountObj = JSON.parse(localStorage.getItem("account"));
+var accountObj;
+var HOST;
+var PORT;
 
 export default {
   name: "Login",
@@ -91,6 +93,9 @@ export default {
       localStorage.removeItem("messageAlert");
       localStorage.removeItem("unAuth");
     }
+    accountObj = JSON.parse(localStorage.getItem("account"));
+    HOST = "35.240.188.199";
+    PORT = "3001";
   },
   created() {
     document.title =
@@ -127,7 +132,7 @@ export default {
       this.login.inputPassword = "";
     },
     logins(payload) {
-      const path = "http://localhost:3001/api/auth/login";
+      const path = "http://" + HOST + ":" + PORT + "/api/auth/login";
       axios
         .post(path, payload)
         .then(res => {
@@ -147,7 +152,7 @@ export default {
     getUserInformation(account_id, account_type) {
       if (account_type == "student") {
         const path =
-          "http://localhost:3001/api/user/" + account_id + "/student";
+          "http://" + HOST + ":" + PORT + "/api/user/" + account_id + "/student";
         axios
           .get(path)
           .then(res => {
@@ -158,7 +163,7 @@ export default {
             console.log(error);
           });
       } else if (account_type == "professor") {
-        const path = "http://localhost:3001/api/user/" + account_id;
+        const path = "http://" + HOST + ":" + PORT + "/api/user/" + account_id;
         axios
           .get(path)
           .then(res => {

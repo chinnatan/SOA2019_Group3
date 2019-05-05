@@ -20,6 +20,17 @@ body.login-page {
     background-size: cover;
 }
 
+body.home {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.45), 
+        rgba(0, 0, 0, 0.45)
+      ),url(../images/itkmitl-building.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 .footer-logo {
     margin-bottom: 1rem;
 }
