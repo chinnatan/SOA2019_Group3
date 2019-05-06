@@ -30,6 +30,7 @@
                           <form @submit="onLogin">
                             <div class="form-group">
                               <input
+                                id="usernameText"
                                 type="text"
                                 class="form-control-input"
                                 placeholder="ชื่อผู้ใช้ เช่น it590700xx"
@@ -38,6 +39,7 @@
                             </div>
                             <div class="form-group">
                               <input
+                                id="passwordText"
                                 type="password"
                                 class="form-control-input"
                                 placeholder="รหัสผ่าน"
