@@ -1,7 +1,6 @@
 FROM keymetrics/pm2:latest-alpine
 
 # Bundle APP files
-COPY data data/
 COPY src src/
 COPY package.json .
 COPY process.yml .

@@ -1,97 +1,105 @@
 // Testing User
 
 const server = require('../server');
-const request = require('supertest')
+var chai = require("chai");
+const should = chai.should();
+const chaiHttp = require("chai-http");
 
-describe('/', () => {
-    beforeAll(async () => {
-        console.log('change port to 3001 to test')
-    })
+chai.use(chaiHttp);
 
-    afterAll(() => {
-        server.close();
-        console.log('test complete & server close')
-    })
+describe("GET USER", () => {
+    it("should return user information by id", function (done) {
+        chai
+            .request(server)
+            .get("/1")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.a("object");
+                done();
+            });
+    });
 
-    describe('GET /api/user/:userid with correct', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/1')
-            expect(res.body).toEqual([
-                {
-                    "account_id": 1,
-                    "firstname": "ชินธันย์",
-                    "lastname": "ชาติทอง"
-                }
-            ])
-        })
-    })
+    it("should return user information by id incorrect", function (done) {
+        chai
+            .request(server)
+            .get("/2")
+            .end((err, res) => {
+                res.should.equal([
+                    {
+                        "firstname": "กลวัชร",
+                        "lastname": "กาลิกานนท์",
+                        "student_id": "59070008",
+                        "student_term": 2,
+                        "student_year": 3,
+                        "student_generation": 14,
+                        "student_branch": "เทคโนโลยีสารสนเทศ",
+                        "student_sect": "วิศวกรรมซอฟต์แวร์",
+                        "student_faculty": "เทคโนโลยีสารสนเทศ",
+                        "student_degree": "ปริญญาตรี",
+                        "school_year": 2561
+                    }
+                ])
+                done();
+            });
+    });
 
-    describe('GET /api/user/:userid with incorrect', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/2')
-            expect(res.body).toEqual([
-                {
-                    "account_id": 1,
-                    "firstname": "ชินธันย์",
-                    "lastname": "ชาติทอง"
-                }
-            ])
-        })
-    })
+    it("should return student information by id", function (done) {
+        chai
+            .request(server)
+            .get("/1/student")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.a("object");
+                done();
+            });
+    });
 
-    describe('GET /api/user/:userid/student with correct', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/1/student')
-            expect(res.body).toEqual([
-                {
-                    "firstname": "ชินธันย์",
-                    "lastname": "ชาติทอง",
-                    "student_id": "59070040",
-                    "student_term": 2,
-                    "student_year": 3,
-                    "student_generation": 14,
-                    "student_branch": "เทคโนโลยีสารสนเทศ",
-                    "student_sect": "วิศวกรรมซอฟต์แวร์",
-                    "student_faculty": "เทคโนโลยีสารสนเทศ",
-                    "student_degree": "ปริญญาตรี",
-                    "school_year": 2561
-                }
-            ])
-        })
-    })
+    it("should return student information by id incorrect", function (done) {
+        chai
+            .request(server)
+            .get("/2")
+            .end((err, res) => {
+                res.should.equal([
+                    {
+                        "account_id": 1,
+                        "firstname": "ชินธันย์",
+                        "lastname": "ชาติทอง"
+                    }
+                ])
+                done();
+            });
+    });
 
-    describe('GET /api/user/:userid/student with incorrect', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/1/student')
-            expect(res.body).toEqual([
-                {
-                    "firstname": "กลวัชร",
-                    "lastname": "กาลิกานนท์",
-                    "student_id": "59070008",
-                    "student_term": 2,
-                    "student_year": 3,
-                    "student_generation": 14,
-                    "student_branch": "เทคโนโลยีสารสนเทศ",
-                    "student_sect": "วิศวกรรมซอฟต์แวร์",
-                    "student_faculty": "เทคโนโลยีสารสนเทศ",
-                    "student_degree": "ปริญญาตรี",
-                    "school_year": 2561
-                }
-            ])
-        })
-    })
+    it("should return user information by id not found", function (done) {
+        chai
+            .request(server)
+            .get("/1000")
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
 
-    describe('GET /api/user/:userid/ NOT FOUND', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/100')
-            expect(res.body).toEqual(404)
-        })
-    })
+    it("should return student information by id not found", function (done) {
+        chai
+            .request(server)
+            .get("/1000/student")
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
+});
 
-    describe('GET /api/user/:userid/student NOT FOUND', () => {
-        it('should return user information by id', async () => {
-            const res = await request(server).get('/100/student')
-            expect(res.body).toEqual(404)
-        })
-    })
-})
+describe("GET METRICS", () => {
+    it("should return subject information for user by user id", function (done) {
+        this.timeout(10000);
+        chai
+            .request(server)
+            .get("/metrics")
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+});

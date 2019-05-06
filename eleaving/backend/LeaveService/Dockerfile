@@ -1,6 +1,6 @@
 FROM keymetrics/pm2:latest-alpine
 
-VOLUME [ "/src" ]
+VOLUME ["/var/www/leave"]
 
 # Bundle APP files
 COPY src src/
