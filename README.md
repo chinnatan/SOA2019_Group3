@@ -1,42 +1,51 @@
-# E - Leaving : ระบบลาเรียนออนไลน์
-#### SOA'61 Project Group III
-##### Simple Workflow
-![alt img](https://github.com/chinnatan/SOA2019_Group3/blob/master/markdown-here/workflow/Flow%20-%20%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%A7%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%97%E0%B8%B3%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%97%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%A1%E0%B8%94.png)
-##### ระบบลาเรียนออนไลน์คืออะไร ?
-ระบบลาเรียนออนไลน์คือระบบที่ช่วยอำนวยความสะดวกให้นักศึกษาสามารถลาเรียนได้จากทุกที่ทุกเวลาโดยนักศึกษาจำเป็นต้องมี internet เพื่อใช้งาน
-## How to run Service
-First step, Clone project from github
+<p align="center">
+   <img src="https://github.com/chinnatan/SOA2019_Group3/blob/master/markdown-here/images/logo-eleaving-with-text.png" width="395" height="107">
+</p>
+<h1 align="center">
+   SOA2019 GROUP III
+</h1>
+
+# ✦ SERVICE
+| <p align="center">Service Name</p>  | <p align="center">Completely</p>  |
+| ------------- | ------------- |
+| <p align="center"> Auth Service </p>  |<p align="center"> :+1: </p>  |
+| <p align="center"> User Service </p>  | <p align="center"> :+1: </p>  |
+| <p align="center"> Subject Service </p>  | <p align="center"> :+1: </p>  |
+| <p align="center"> Leave Service </p>  | <p align="center"> :+1: </p>  |
+
+หมายเหตุ: :+1: = เสร็จแล้ว ,:-1: = อยู่ในระหว่างปฎิบัติงาน
+
+# ✦ HOW TO RUN SERVICE
+## Clone Project
 ```
 git clone https://github.com/chinnatan/SOA2019_Group3.git
 cd eleaving/backend
 ```
-
-Second step, Compile & Run
-> Leave Service
+## COMPILE & RUN
+> Auth Service
 ```
-cd LeaveService
-node app.js
-```
-> Subject Service
-```
-cd SubjectService
-node app.js
+cd AuthService
+node server.js
 ```
 > User Service
 ```
 cd UserService
-node app.js
-```
-
-Final, Test
-> Leave Service
-```
-cd LeaveService
-npm test
+node server.js
 ```
 > Subject Service
 ```
 cd SubjectService
+node server.js
+```
+> Leave Service
+```
+cd LeaveService
+node server.js
+```
+# ✦ TEST
+> Auth Service
+```
+cd AuthService
 npm test
 ```
 > User Service
@@ -44,129 +53,45 @@ npm test
 cd UserService
 npm test
 ```
-
-## API & Endpoints
-### Leave Service
-| Endpoint URL |
-|---|
-|`GET /leave`|
-|`GET /leave/:leaveid:`|
-|`GET /leave/:leaveid:/status`|
-|`POST /leave/sick/send`|
-|`POST /leave/personal/send`|
-#### หมายเหตุ 
-- `GET /leave/:leaveid` ข้อมูลสมมุติ (leaveid) -> "sl001", "pn001"
-- `POST /leave/sick/send`
-   - JSON (Use `Postman`)
-   ```
-   {
-      "leavedocumentid": "sl002",
-      "leavedocumentcategory": "ลาป่วย",
-      "leavedocumentdate": "26/03/2562",
-      "firstname": "ชินธันย์",
-      "lastname": "ชาติทอง",
-      "studentid": "59070040",
-      "term": 2,
-      "schoolyear": 2561,
-      "studentyear": 3,
-      "studentgeneration": 14,
-      "studentbranch": "Information Technology",
-      "studentdegree": "ปริญญาตรี",
-      "description": "ลำไส้อักเสบ",
-      "namedocument": [
-          {
-              "namedocumentid": 1,
-              "filename": "ใบรับรองแพทย์"
-          }
-      ],
-      "startleavedate": "25/03/2562",
-      "endleavedate": "25/03/2562",
-      "totaldate": 1,
-      "subjectlist": [
-          {
-              "id": "60123",
-              "name": "SOA",
-              "section": 1,
-              "professor": "Somkiat",
-              "status": "รออนุมัติ"
-          },
-          {
-              "id": "60124",
-              "name": "SVAV",
-              "section": 1,
-              "professor": "Somkiat Wa.",
-              "status": "รออนุมัติ"
-          },
-          {
-              "id": "60125",
-              "name": "LIB",
-              "section": 601,
-              "professor": "Chutima",
-              "status": "อนุมัติ"
-          }
-      ]
-    }
-   ```
-- `POST /leave/personal/send`
-   - JSON (Use `Postman`)
-   ```
-   {
-      "leavedocumentid": "pn002",
-      "leavedocumentcategory": "ลากิจ",
-      "leavedocumentdate": "26/03/2562",
-      "firstname": "ชินธันย์",
-      "lastname": "ชาติทอง",
-      "studentid": "59070040",
-      "term": 2,
-      "schoolyear": 2561,
-      "studentyear": 3,
-      "studentgeneration": 14,
-      "studentbranch": "Information Technology",
-      "studentdegree": "ปริญญาตรี",
-      "description": "ไปทำธุระต่างจังหวัด",
-      "namedocument": [
-          {
-              
-          }
-      ],
-      "startleavedate": "25/03/2562",
-      "endleavedate": "25/03/2562",
-      "totaldate": 1,
-      "subjectlist": [
-          {
-              "id": "60123",
-              "name": "SOA",
-              "section": 1,
-              "professor": "Somkiat",
-              "status": "รออนุมัติ"
-          },
-          {
-              "id": "60124",
-              "name": "SVAV",
-              "section": 1,
-              "professor": "Somkiat Wa.",
-              "status": "รออนุมัติ"
-          },
-          {
-              "id": "60125",
-              "name": "LIB",
-              "section": 601,
-              "professor": "Chutima",
-              "status": "อนุมัติ"
-          }
-      ]
-    }
-   ```
- 
-### Subject Service
-| Endpoint URL |
-|---|
-|`GET /subject/user/:userid`|
-#### หมายเหตุ 
-- `GET /subject/user/:userid` ข้อมูลสมมุติ (userid) -> "1", "2"
-### User Service
-| Endpoint URL |
-|---|
-|`GET /user/:userid`|
-#### หมายเหตุ 
-- `GET /user/:userid` ข้อมูลสมมุติ (userid) -> "1"
+> Subject Service
+```
+cd SubjectService
+npm test
+```
+> Leave Service
+```
+cd LeaveService
+npm test
+```
+# ✦ DEPLOY WITH API GATEWAY
+```
+http://35.240.188.199:3001/{Endpoint following next section}
+```
+# ✦ API & ENDPOINT WITH API GATEWAY
+## AUTH SERVICE
+| Endpoint |
+|--|
+| `POST` /api/auth/login      |
+## USER SERVICE
+| Endpoint |
+|--|
+| `GET` /api/user      |
+| `GET` /api/user/:userid|
+| `GET` /api/user/:userid/student|
+## SUBJECT SERVICE
+| Endpoint |
+|--|
+| `GET` /api/subject      |
+| `GET` /api/subject/user/:userid|
+| `GET` /api/subject/user/:userid/professor|
+## LEAVE SERVICE
+| Endpoint |
+|--|
+| `GET` /api/leave      |
+| `GET` /api/leave/:leaveid|
+| `GET` /api/leave/user/:userid/status|
+| `GET` /api/leave/:userid/count      |
+| `GET` /api/leave/uploads/:filename|
+| `POST` /api/leave/sick/send|
+| `POST` /api/leave/personal/send|
+| `POST` /api/leave/status/update|
