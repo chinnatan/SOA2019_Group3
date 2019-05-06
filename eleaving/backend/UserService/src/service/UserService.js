@@ -16,6 +16,17 @@ var connect = MySQL.createConnection({
 console.log(`[User Service] Connected to Mysql -> ${HOST_MYSQL}:${PORT_MYSQL}`);
 connect.connect();
 
+exports.getAllUser = (req, res) => {
+    connect.query('SELECT * FROM userinformation', function (err, results, fields) {
+        if (results.length) {
+            console.log("GET USER IS OK")
+            return res.status(200).json(results)
+        } else {
+            return res.status(404).json(err)
+        }
+    })
+}
+
 exports.getUserById = (req, res) => {
     var userid = req.params.userid;
 

@@ -67,6 +67,7 @@ app.get('/metrics', (req, res) => {
     res.end(Prometheus.register.metrics())
 })
 
+
 const subjectController = require('./src/controller/SubjectController')
 app.use("/", subjectController)
 

@@ -8,6 +8,27 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 
 describe("GET USER", () => {
+    it("should return all user", function (done) {
+        chai
+            .request(server)
+            .get("/")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.a("object");
+                done();
+            });
+    });
+
+    it("shouldn't return all user", function (done) {
+        chai
+            .request(server)
+            .get("/")
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
+
     it("should return user information by id", function (done) {
         chai
             .request(server)

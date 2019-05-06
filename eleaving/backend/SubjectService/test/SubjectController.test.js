@@ -8,6 +8,29 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 
 describe("GET SUBJECT", () => {
+    it("should all subject", function (done) {
+        this.timeout(10000);
+        chai
+            .request(server)
+            .get("/")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.a("object");
+                done();
+            });
+    });
+
+    it("shouldn't all subject", function (done) {
+        this.timeout(10000);
+        chai
+            .request(server)
+            .get("/")
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
+
     it("should return subject information for user by user id", function (done) {
         this.timeout(10000);
         chai

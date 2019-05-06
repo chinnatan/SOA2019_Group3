@@ -16,6 +16,18 @@ var connect = MySQL.createConnection({
 console.log(`[Subject Service] Connected to Mysql -> ${HOST_MYSQL}:${PORT_MYSQL}`);
 connect.connect();
 
+exports.getAllSubject = (req, res) => {
+
+    connect.query('select * from subjects', function (err, results, fields) {
+            if (results.length) {
+                console.log("Get all subjects is ok")
+                return res.status(200).json(results)
+            } else {
+                return res.status(404)
+            }
+        })
+}
+
 exports.getSubjectByUserId = (req, res) => {
     var userid = req.params.userid
 
