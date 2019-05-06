@@ -154,6 +154,7 @@
                                 <div class="row">
                                   <div class="col-md-12 text-center">
                                     <button
+                                      id="nextStep01"
                                       type="button"
                                       class="btn btn-success anakotmai-medium-text"
                                       @click="next()"
@@ -266,11 +267,13 @@
                                 <div class="row">
                                   <div class="col-md-12 text-center">
                                     <button
+                                      id="prevStep02"
                                       type="button"
                                       class="btn btn-secondary anakotmai-medium-text"
                                       @click="prev()"
                                     >ย้อนกลับ</button>
                                     <button
+                                      id="nextStep02"
                                       type="button"
                                       class="btn btn-success anakotmai-medium-text"
                                       @click="next()"
@@ -285,6 +288,7 @@
                                 <div class="row">
                                   <div class="col-md">
                                     <button
+                                      id="addSubject"
                                       type="button"
                                       class="btn btn-sm btn-info anakotmai-medium-text"
                                       @click="addLine"
@@ -324,6 +328,7 @@
                                                 </td>
                                                 <td>
                                                   <button
+                                                    id="removeSubject"
                                                     type="button"
                                                     class="btn btn-sm btn-danger anakotmai-medium-text"
                                                     @click="removeLine(index)"
@@ -342,11 +347,13 @@
                                 <div class="row">
                                   <div class="col-md-12 text-center">
                                     <button
+                                      id="prevStep03"
                                       type="button"
                                       class="btn btn-secondary anakotmai-medium-text"
                                       @click="prev()"
                                     >ย้อนกลับ</button>
                                     <button
+                                      id="submitStep03"
                                       type="button"
                                       class="btn btn-success anakotmai-medium-text"
                                       @click="onSendDocument()"
@@ -396,11 +403,11 @@ export default {
   },
   beforeCreate() {
     document.body.className = "";
-    accountObj = JSON.parse(localStorage.getItem("account"))
-    profileObj = JSON.parse(localStorage.getItem("profile"))
-    if(accountObj.account_type == 'professor') {
-      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.")
-      router.push({ name: "Login" })
+    accountObj = JSON.parse(localStorage.getItem("account"));
+    profileObj = JSON.parse(localStorage.getItem("profile"));
+    if (accountObj.account_type == "professor") {
+      alert("คุณไม่มีสิทธิ์เข้าถึงหน้านี้.");
+      router.push({ name: "Login" });
     }
     HOST = "35.240.188.199";
     PORT = "3001";
@@ -477,8 +484,11 @@ export default {
       // ข้อมูลการลา
       if (
         this.step == 2 &&
-        (this.inputLeaveTopic.comment == "" || this.inputLeaveTopic.comment == null ||
-          this.file.name == "เลือกไฟล์..." || this.file.name == "" || this.file.name == null)
+        (this.inputLeaveTopic.comment == "" ||
+          this.inputLeaveTopic.comment == null ||
+          this.file.name == "เลือกไฟล์..." ||
+          this.file.name == "" ||
+          this.file.name == null)
       ) {
         this.alertEmptyFieldsDisplay();
       } else if (this.step == 2 && this.inputLeaveTopic.total <= 0) {
@@ -515,7 +525,8 @@ export default {
       if (!this.blockRemoval) this.lines.splice(lineId, 1);
     },
     getSubjectByUserID(account_id) {
-      const path = "http://" + HOST + ":" + PORT + "/api/subject/user/" + account_id;
+      const path =
+        "http://" + HOST + ":" + PORT + "/api/subject/user/" + account_id;
       axios
         .get(path)
         .then(res => {

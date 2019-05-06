@@ -16,7 +16,7 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <button type="button" class="btn btn-orange anakotmai-medium-text" @click="goto()">เข้าสู่เว็บไซต์</button>
+                <button id="goto" type="button" class="btn btn-orange anakotmai-medium-text" @click="goto()">เข้าสู่เว็บไซต์</button>
               </div>
             </div>
           </div>

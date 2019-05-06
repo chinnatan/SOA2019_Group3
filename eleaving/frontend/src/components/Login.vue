@@ -45,10 +45,12 @@
                               >
                             </div>
                             <button
+                              id="login"
                               type="submit"
                               class="btn btn-success anakotmai-medium-text"
                             >เข้าสู่ระบบ</button>
                             <button
+                              id="clear"
                               type="button"
                               class="btn btn-danger anakotmai-medium-text"
                               @click="isClear()"
@@ -152,7 +154,13 @@ export default {
     getUserInformation(account_id, account_type) {
       if (account_type == "student") {
         const path =
-          "http://" + HOST + ":" + PORT + "/api/user/" + account_id + "/student";
+          "http://" +
+          HOST +
+          ":" +
+          PORT +
+          "/api/user/" +
+          account_id +
+          "/student";
         axios
           .get(path)
           .then(res => {
