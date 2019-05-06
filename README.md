@@ -67,7 +67,7 @@ npm test
 ```
 http://35.240.188.199:3001/{Endpoint following next section}
 ```
-# ✦ API & ENDPOINT WITH API GATEWAY
+# ✦ API & ENDPOINT WITH API GATEWAY [![](https://img.shields.io/badge/swagger-api%20document-blue.svg)](https://app.swaggerhub.com/apis/chinnatan/Eleaving/1.0.0)
 ## AUTH SERVICE
 | Endpoint |
 |--|
